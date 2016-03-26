@@ -17,3 +17,12 @@
 - name: Configure munin plugin
   include: munin-plugin.yml
   when: dpkg_munin_node_check.rc == 0
+
+- name: Check if fail2ban is installed
+  command: dpkg -L fail2ban
+  register: dpkg_fail2ban_check
+  ignore_errors: yes
+
+- name: Configure fail2ban jail
+  include: fail2ban-jail.yml
+  when: dpkg_fail2ban_check.rc == 0
