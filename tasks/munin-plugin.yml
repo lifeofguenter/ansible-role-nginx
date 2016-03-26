@@ -7,12 +7,10 @@
 
 - name: Add nginx_request plugin
   file: src=/usr/share/munin/plugins/nginx_request dest=/etc/munin/plugins/nginx_request state=link
+  notify: restart_munin_node
   become: yes
 
 - name: Add nginx_status plugin
   file: src=/usr/share/munin/plugins/nginx_status dest=/etc/munin/plugins/nginx_status state=link
-  become: yes
-
-- name: Restart munin-node
-  action: service name=munin-node state=restarted
+  notify: restart_munin_node
   become: yes
