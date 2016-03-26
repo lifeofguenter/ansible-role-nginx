@@ -7,7 +7,7 @@
 
 - name: Install nginx
   include: nginx.yml
-  when nginx_current.rc != 0 or nginx_current.stderr.find('nginx/{{ nginx_version }}') == -1
+  when: nginx_current.rc != 0 or nginx_current.stderr.find('nginx/{{ nginx_version }}') == -1
 
 - name: Check if munin-node is installed
   command: dpkg -L munin-node
