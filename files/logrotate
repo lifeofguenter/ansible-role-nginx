@@ -1,0 +1,13 @@
+/var/log/nginx/*.log /var/www/*/logs/error.log {
+  daily
+  missingok
+  rotate 7
+  compress
+  delaycompress
+  notifempty
+  create
+  sharedscripts
+  postrotate
+    invoke-rc.d nginx rotate >/dev/null 2>&1
+  endscript
+}

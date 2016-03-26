@@ -1,0 +1,19 @@
+---
+
+- name: Get current nginx version
+  command: nginx -v
+  register: nginx_current
+  ignore_errors: yes
+
+- name: Install nginx
+  include: nginx.yml
+  when nginx_current.rc != 0 or nginx_current.stderr.find('nginx/{{ nginx_version }}') == -1
+
+- name: Check if munin-node is installed
+  command: dpkg -L munin-node
+  register: dpkg_munin_node_check
+  ignore_errors: yes
+
+- name: Configure munin plugin
+  include: munin-plugin.yml
+  when: dpkg_munin_node_check.rc == 0

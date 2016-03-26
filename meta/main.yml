@@ -1,0 +1,25 @@
+galaxy_info:
+  author: Gunter Grodotzki
+  description: A simple role that compiles nginx from source
+  company: weheartwebsites UG
+  license: MIT
+  min_ansible_version: 2.0
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+    - utopic
+    - vivid
+    - wily
+    - xenial
+  - name: Debian
+    versions:
+    - jessie
+    - wheezy
+  galaxy_tags:
+  - system
+  - development
+  - web
+  - src
+
+dependencies: []

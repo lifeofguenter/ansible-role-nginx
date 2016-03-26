@@ -1,0 +1,124 @@
+---
+- name: Install dependencies
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
+  with_items:
+    - make
+    - gcc
+    - g++
+    - libc6-dev
+    - libssl-dev
+  become: yes
+
+- name: Download source code(s)
+  get_url: url={{ item }} dest=/tmp/
+  with_items:
+    - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
+    - ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-{{ pcre_version }}.tar.gz
+    - http://zlib.net/zlib-{{ zlib_version }}.tar.gz
+
+- name: Extract archive(s)
+  command: chdir=/tmp/ tar xfz {{ item }} creates=/tmp/{{ item | replace(".tar.gz", "") }}
+  with_items:
+    - nginx-{{ nginx_version }}.tar.gz
+    - pcre-{{ pcre_version }}.tar.gz
+    - zlib-{{ zlib_version }}.tar.gz
+
+- name: Make clean
+  command: chdir=/tmp/nginx-{{ nginx_version }} make clean
+  ignore_errors: yes
+
+- name: Configure
+  command: >
+    ./configure
+    --prefix=/usr/share/nginx
+    --sbin-path=/usr/sbin/nginx
+    --conf-path=/etc/nginx/nginx.conf
+    --http-log-path=/var/log/nginx/access.log
+    --error-log-path=/var/log/nginx/error.log
+    --lock-path=/var/lock/nginx.lock
+    --pid-path=/run/nginx.pid
+    --http-client-body-temp-path=/var/lib/nginx/body
+    --http-fastcgi-temp-path=/var/lib/nginx/fastcgi
+    --http-proxy-temp-path=/var/lib/nginx/proxy
+    --without-select_module
+    --without-poll_module
+    --with-file-aio
+    --with-ipv6
+    --with-pcre=../pcre-{{ pcre_version }}
+    --with-pcre-jit
+    --with-md5-asm
+    --with-sha1-asm
+    --with-zlib=../zlib-{{ zlib_version }}
+    --with-zlib-asm=pentiumpro
+    --with-http_ssl_module
+    --with-http_v2_module
+    --with-http_realip_module
+    --with-http_gunzip_module
+    --with-http_gzip_static_module
+    --with-http_auth_request_module
+    --with-http_stub_status_module
+    --without-http_ssi_module
+    --without-http_userid_module
+    --without-http_geo_module
+    --without-http_split_clients_module
+    --without-http_referer_module
+    --without-http_uwsgi_module
+    --without-http_scgi_module
+    --without-http_memcached_module
+    --without-http_empty_gif_module
+    chdir=/tmp/nginx-{{ nginx_version }}
+
+- name: Make
+  command: chdir=/tmp/nginx-{{ nginx_version }} make
+
+- name: Install
+  command: chdir=/tmp/nginx-{{ nginx_version }} make install
+  become: yes
+
+- name: Create folders
+  file: path={{ item }} state=directory mode=0755 recurse=yes
+  with_items:
+    - /var/lib/nginx
+    - /etc/nginx/common
+  become: yes
+
+- name: Add logrotate config
+  copy: src=logrotate dest=/etc/logrotate.d/nginx
+  become: yes
+
+- name: Add startup script
+  copy: src=rc.nginx dest=/etc/init.d/nginx mode="a+x"
+  become: yes
+
+- name: Enable startup script
+  service: name=nginx enabled=yes
+  become: yes
+
+- name: Add htpasswd script
+  copy: src=htpasswd.sh dest=/usr/local/bin/htpasswd mode="a+x"
+  become: yes
+
+- name: Check config file state
+  stat: path=/etc/nginx/.touched
+  become: yes
+  register: nginx_config_state
+
+- name: Adding base config files
+  copy: force=yes src={{ item }} dest=/etc/nginx/{{ item }}
+  with_items:
+    - fastcgi.conf
+    - fastcgi_params
+    - mime.types
+    - nginx.conf
+    - common/client-performance.conf
+    - common/client-performance-inline.conf
+    - common/cloudflare.conf
+    - common/drop.conf
+    - common/munin-node.conf
+    - common/secure-ssl.conf
+  become: yes
+  when: nginx_config_state.stat.exists == False
+
+- name: Set config file state
+  file: path=/etc/nginx/.touched state=touch
+  become: yes
