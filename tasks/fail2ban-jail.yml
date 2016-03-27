@@ -1,6 +1,6 @@
 ---
 
 - name: Add base config
-  file: src=jail.conf dest=/etc/fail2ban/jail.d/nginx.conf mode=0644
+  copy: src=jail.conf dest=/etc/fail2ban/jail.d/nginx.conf mode=0644
   notify: restart_fail2ban
   become: yes
