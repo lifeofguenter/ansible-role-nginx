@@ -1,7 +1,7 @@
 ---
 
 - name: Get current nginx version
-  command: nginx -v
+  command: /usr/sbin/nginx -v
   register: nginx_current
   ignore_errors: yes
 
