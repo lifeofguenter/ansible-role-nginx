@@ -1,6 +1,6 @@
 ---
 
-nginx_version: 1.9.12
+nginx_version: 1.9.14
 
 pcre_version: 8.38
 
