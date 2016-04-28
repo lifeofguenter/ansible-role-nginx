@@ -80,6 +80,7 @@
   with_items:
     - /var/lib/nginx
     - /etc/nginx/common
+    - /etc/nginx/vhosts
   become: yes
 
 - name: Add logrotate config
