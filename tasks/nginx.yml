@@ -1,4 +1,5 @@
 ---
+
 - name: Install dependencies
   apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
   with_items:
@@ -87,12 +88,20 @@
   copy: src=logrotate dest=/etc/logrotate.d/nginx
   become: yes
 
-- name: Add startup script
-  copy: src=rc.nginx dest=/etc/init.d/nginx mode="a+x"
+- name: Add service
+  copy: src=nginx.service dest=/lib/systemd/system/nginx.service mode=0640
   become: yes
 
-- name: Enable startup script
-  service: name=nginx enabled=yes
+- name: Activate service
+  file: src=/lib/systemd/system/nginx.service dest=/etc/systemd/system/multi-user.target.wants/nginx.service state=link
+  become: yes
+
+- name: Reload systemd
+  command: systemctl daemon-reload
+  become: yes
+
+- name: Enable nginx
+  command: systemctl enable nginx
   become: yes
 
 - name: Add htpasswd script

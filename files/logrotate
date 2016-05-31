@@ -8,6 +8,6 @@
   create
   sharedscripts
   postrotate
-    invoke-rc.d nginx rotate >/dev/null 2>&1
+    kill -s USR1 $(cat /run/nginx.pid) &> /dev/null
   endscript
 }
