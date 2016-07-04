@@ -89,12 +89,12 @@
   become: yes
 
 - name: Add service
-  copy: src=nginx.service dest=/lib/systemd/system/nginx.service mode=0640
+  copy: src=nginx.service dest=/lib/systemd/system/nginx.service mode=0644
   become: yes
 
-- name: Activate service
-  file: src=/lib/systemd/system/nginx.service dest=/etc/systemd/system/multi-user.target.wants/nginx.service state=link
-  become: yes
+#- name: Activate service
+#  file: src=/lib/systemd/system/nginx.service dest=/etc/systemd/system/multi-user.target.wants/nginx.service state=link
+#  become: yes
 
 - name: Reload systemd
   command: systemctl daemon-reload
