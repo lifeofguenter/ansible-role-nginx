@@ -14,7 +14,7 @@
   get_url: url={{ item }} dest=/tmp/
   with_items:
     - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
-    - ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-{{ pcre_version }}.tar.gz
+    - http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-{{ pcre_version }}.tar.gz
     - http://zlib.net/zlib-{{ zlib_version }}.tar.gz
 
 - name: Extract archive(s)
