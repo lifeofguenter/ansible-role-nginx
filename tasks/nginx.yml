@@ -7,7 +7,6 @@
     - gcc
     - g++
     - libc6-dev
-    - libssl-dev
   become: yes
 
 - name: Download source code(s)
@@ -15,6 +14,7 @@
   with_items:
     - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
     - http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-{{ pcre_version }}.tar.gz
+    - https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
     - http://zlib.net/zlib-{{ zlib_version }}.tar.gz
 
 - name: Extract archive(s)
@@ -23,6 +23,7 @@
     - nginx-{{ nginx_version }}.tar.gz
     - pcre-{{ pcre_version }}.tar.gz
     - zlib-{{ zlib_version }}.tar.gz
+    - openssl-{{ openssl_version }}.tar.gz
 
 - name: Make clean
   command: chdir=/tmp/nginx-{{ nginx_version }} make clean
@@ -38,35 +39,36 @@
     --error-log-path=/var/log/nginx/error.log
     --lock-path=/var/lock/nginx.lock
     --pid-path=/run/nginx.pid
-    --http-client-body-temp-path=/var/lib/nginx/body
-    --http-fastcgi-temp-path=/var/lib/nginx/fastcgi
-    --http-proxy-temp-path=/var/lib/nginx/proxy
+    --http-client-body-temp-path=/var/cache/nginx/client
+    --http-proxy-temp-path=/var/cache/nginx/proxy
+    --http-fastcgi-temp-path=/var/cache/nginx/fastcgi
+    --http-uwsgi-temp-path=/var/cache/nginx/uwsgi
+    --http-scgi-temp-path=/var/cache/nginx/scgi
     --without-select_module
     --without-poll_module
-    --with-file-aio
-    --with-ipv6
     --with-pcre=../pcre-{{ pcre_version }}
     --with-pcre-jit
-    --with-md5-asm
-    --with-sha1-asm
     --with-zlib=../zlib-{{ zlib_version }}
     --with-zlib-asm=pentiumpro
     --with-http_ssl_module
-    --with-http_v2_module
+    --with-openssl=../openssl-{{ openssl_version }}
+    --with-http_addition_module
     --with-http_realip_module
+    --with-http_sub_module
+    --with-http_flv_module
+    --with-http_mp4_module
     --with-http_gunzip_module
     --with-http_gzip_static_module
+    --with-http_random_index_module
+    --with-http_secure_link_module
+    --with-http_stub_status_module
     --with-http_auth_request_module
     --with-http_stub_status_module
-    --without-http_ssi_module
-    --without-http_userid_module
-    --without-http_geo_module
-    --without-http_split_clients_module
-    --without-http_referer_module
-    --without-http_uwsgi_module
-    --without-http_scgi_module
+    --with-threads
+    --with-file-aio
+    --with-http_v2_module
+    --with-ipv6
     --without-http_memcached_module
-    --without-http_empty_gif_module
     chdir=/tmp/nginx-{{ nginx_version }}
 
 - name: Make
@@ -79,7 +81,7 @@
 - name: Create folders
   file: path={{ item }} state=directory mode=0755 recurse=yes
   with_items:
-    - /var/lib/nginx
+    - /var/cache/nginx
     - /etc/nginx/common
     - /etc/nginx/vhosts
   become: yes
@@ -92,10 +94,6 @@
   copy: src=nginx.service dest=/lib/systemd/system/nginx.service mode=0644
   become: yes
 
-#- name: Activate service
-#  file: src=/lib/systemd/system/nginx.service dest=/etc/systemd/system/multi-user.target.wants/nginx.service state=link
-#  become: yes
-
 - name: Reload systemd
   command: systemctl daemon-reload
   become: yes
@@ -107,11 +105,6 @@
 - name: Add htpasswd script
   copy: src=htpasswd.sh dest=/usr/local/bin/htpasswd mode="a+x"
   become: yes
-
-- name: Check config file state
-  stat: path=/etc/nginx/.touched
-  become: yes
-  register: nginx_config_state
 
 - name: Adding base config files
   copy: force=yes src={{ item }} dest=/etc/nginx/{{ item }}
@@ -127,8 +120,11 @@
     - common/munin-node.conf
     - common/secure-ssl.conf
   become: yes
-  when: nginx_config_state.stat.exists == False
 
-- name: Set config file state
-  file: path=/etc/nginx/.touched state=touch
+- name: Add default vhost config
+  copy: force=no src=vhost.conf dest=/etc/nginx/vhosts/default.conf
+  become: yes
+
+- name: Reload nginx
+  command: systemctl reload-or-restart nginx
   become: yes
