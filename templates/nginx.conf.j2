@@ -13,6 +13,9 @@ events {
 }
 
 http {
+  {% if nginx_map_hash_max_size is defined %}
+  map_hash_max_size {{ nginx_map_hash_max_size }};
+  {% endif %}
   include       mime.types;
   default_type  application/octet-stream;
 

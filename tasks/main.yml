@@ -9,6 +9,8 @@
   include: nginx.yml
   when: nginx_current.rc != 0 or nginx_current.stderr.find('nginx/{{ nginx_version }}') == -1
 
+- include: config.yml
+
 - name: Check if munin-node is installed
   command: dpkg -L munin-node
   register: dpkg_munin_node_check

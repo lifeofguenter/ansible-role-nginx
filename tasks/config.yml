@@ -1,0 +1,65 @@
+---
+
+- name: Create folders
+  file: path={{ item }} state=directory mode=0755 recurse=no
+  with_items:
+    - /etc/nginx
+    - /var/cache/nginx
+    - /etc/nginx/common
+    - /etc/nginx/vhosts
+  become: yes
+
+- name: Add logrotate config
+  copy: src=logrotate dest=/etc/logrotate.d/nginx
+  become: yes
+
+- name: Check for systemd
+  command: systemctl --version
+  register: systemctl_version
+  ignore_errors: yes
+
+- name: Add systemd service
+  copy: src=nginx.service.ini dest=/lib/systemd/system/nginx.service mode=0644
+  become: yes
+  when: systemctl_version.rc == 0
+  notify: restart_nginx
+
+- name: Reload systemd
+  command: systemctl daemon-reload
+  when: systemctl_version.rc == 0
+  become: yes
+
+- name: Add sysvinit service
+  copy: src=init.sh dest=/etc/init.d/nginx mode="a+x"
+  become: yes
+  when: systemctl_version.rc != 0
+  notify: restart_nginx
+
+- name: Add htpasswd script
+  copy: src=htpasswd.sh dest=/usr/local/bin/htpasswd mode="a+x"
+  become: yes
+
+- name: Adding base config files
+  copy: force=yes src={{ item }} dest=/etc/nginx/{{ item }}
+  with_items:
+    - fastcgi.conf
+    - fastcgi_params
+    - mime.types
+    - common/client-performance.conf
+    - common/client-performance-inline.conf
+    - common/cloudflare.conf
+    - common/drop.conf
+    - common/munin-node.conf
+    - common/secure-ssl.conf
+  become: yes
+  notify: restart_nginx
+
+- name: Add nginx.conf
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  become: yes
+  notify: restart_nginx
+
+- name: Add default vhost config
+  copy: force=no src=vhost.conf dest=/etc/nginx/vhosts/default.conf
+  become: yes
+  notify: restart_nginx
