@@ -1,4 +1,4 @@
-/var/log/nginx/*.log /var/www/*/logs/error.log {
+/var/log/nginx/*.log /var/www/logs/nginx-access.log /var/www/logs/nginx-error.log /var/www/*/logs/error.log {
   daily
   missingok
   rotate 7

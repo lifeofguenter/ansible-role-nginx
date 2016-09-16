@@ -1,7 +1,7 @@
 ---
 
 - name: restart_nginx
-  service: name=nginx enabled=yes state=reloaded
+  service: name=nginx enabled=yes state=restarted
   become: yes
 
 - name: restart_munin_node
