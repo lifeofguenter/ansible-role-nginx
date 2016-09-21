@@ -43,7 +43,6 @@
   copy: force=yes src={{ item }} dest=/etc/nginx/{{ item }}
   with_items:
     - fastcgi.conf
-    - fastcgi_params
     - mime.types
     - common/client-performance.conf
     - common/client-performance-inline.conf

@@ -19,12 +19,18 @@ http {
   include       mime.types;
   default_type  application/octet-stream;
 
-  resolver 8.8.8.8 8.8.4.4 valid=3600s;
+  resolver 8.8.8.8 8.8.4.4 valid=600s;
   resolver_timeout 4s;
 
-  # http-forwarded-proto hack
+  # make usage of $https dynamic
   map $https $fcgi_https {
     on on;
+  }
+
+  # make usage of $scheme dynamic
+  map $http_x_forwarded_proto $the_scheme {
+    default $scheme;
+    https https;
   }
 
   # security
@@ -53,4 +59,3 @@ http {
   # special munin-node vhost
   include common/munin-node.conf;
 }
-
