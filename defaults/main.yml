@@ -4,6 +4,6 @@ nginx_version: 1.11.8
 
 pcre_version: 8.39
 
-zlib_version: 1.2.8
+zlib_version: 1.2.10
 
 openssl_version: 1.0.2j
