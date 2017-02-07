@@ -55,9 +55,9 @@ http {
   client_max_body_size 100M;
   reset_timedout_connection on;
 
-  # vhosts
-  include vhosts/*.conf;
-
   # special munin-node vhost
   include common/munin-node.conf;
+
+  # vhosts
+  include vhosts/*.conf;
 }
