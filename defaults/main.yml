@@ -1,9 +1,9 @@
 ---
 
-nginx_version: 1.11.9
+nginx_version: 1.11.10
 
 pcre_version: "8.40"
 
 zlib_version: 1.2.11
 
-openssl_version: 1.1.0d
+openssl_version: 1.1.0e
