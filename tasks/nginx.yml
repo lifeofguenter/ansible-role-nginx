@@ -22,7 +22,6 @@
     - http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-{{ pcre_version }}.tar.gz
     - https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
     - http://zlib.net/zlib-{{ zlib_version }}.tar.gz
-    - https://github.com/google/ngx_brotli/archive/master.zip
 
 - name: extract archives
   command: tar xfz {{ item }} creates=/tmp/{{ item | replace(".tar.gz", "") }}
@@ -36,7 +35,7 @@
 
 - name: unzip files
   unarchive:
-    src: /tmp/master.zip
+    src: https://github.com/google/ngx_brotli/archive/master.zip
     dest: /tmp/
     remote_src: yes
 
