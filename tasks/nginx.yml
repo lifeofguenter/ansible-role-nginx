@@ -33,11 +33,11 @@
     - zlib-{{ zlib_version }}.tar.gz
     - openssl-{{ openssl_version }}.tar.gz
 
-- name: unzip files
-  unarchive:
-    src: https://github.com/google/ngx_brotli/archive/master.zip
-    dest: /tmp/
-    remote_src: yes
+- name: clone ngx_brotli
+  git:
+    repo: https://github.com/google/ngx_brotli.git
+    dest: /tmp/ngx_brotli
+    accept_hostkey: yes
 
 - name: make clean
   command: make clean
@@ -85,7 +85,7 @@
     --with-http_v2_module
     --with-ipv6
     --without-http_memcached_module
-    --add-module=/tmp/ngx_brotli-master
+    --add-module=/tmp/ngx_brotli
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
 
