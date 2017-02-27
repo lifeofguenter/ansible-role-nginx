@@ -1,7 +1,11 @@
 ---
 
-- name: Install dependencies
-  apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
   with_items:
     - make
     - gcc
@@ -9,27 +13,40 @@
     - libc6-dev
   become: yes
 
-- name: Download source code(s)
-  get_url: url={{ item }} dest=/tmp/
+- name: download sources
+  get_url:
+    url: "{{ item }}"
+    dest: /tmp/
   with_items:
     - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
     - http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-{{ pcre_version }}.tar.gz
     - https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
     - http://zlib.net/zlib-{{ zlib_version }}.tar.gz
+    - https://github.com/google/ngx_brotli/archive/master.zip
 
-- name: Extract archive(s)
-  command: chdir=/tmp/ tar xfz {{ item }} creates=/tmp/{{ item | replace(".tar.gz", "") }}
+- name: extract archives
+  command: tar xfz {{ item }} creates=/tmp/{{ item | replace(".tar.gz", "") }}
+  args:
+    chdir: /tmp/
   with_items:
     - nginx-{{ nginx_version }}.tar.gz
     - pcre-{{ pcre_version }}.tar.gz
     - zlib-{{ zlib_version }}.tar.gz
     - openssl-{{ openssl_version }}.tar.gz
 
-- name: Make clean
-  command: chdir=/tmp/nginx-{{ nginx_version }} make clean
+- name: unzip files
+  unarchive:
+    src: /tmp/master.zip
+    dest: /tmp/
+    remote_src: yes
+
+- name: make clean
+  command: make clean
+  args:
+    chdir: /tmp/nginx-{{ nginx_version }}
   ignore_errors: yes
 
-- name: Configure
+- name: configure
   command: >
     ./configure
     --prefix=/usr/share/nginx
@@ -69,12 +86,18 @@
     --with-http_v2_module
     --with-ipv6
     --without-http_memcached_module
-    chdir=/tmp/nginx-{{ nginx_version }}
+    --add-module=/tmp/ngx_brotli-master
+  args:
+    chdir: /tmp/nginx-{{ nginx_version }}
 
-- name: Make
-  command: chdir=/tmp/nginx-{{ nginx_version }} make
+- name: make
+  command: make
+  args:
+    chdir: /tmp/nginx-{{ nginx_version }}
 
-- name: Install
-  command: chdir=/tmp/nginx-{{ nginx_version }} make install
+- name: install
+  command: make install
+  args:
+    chdir: /tmp/nginx-{{ nginx_version }} 
   become: yes
   notify: restart_nginx
