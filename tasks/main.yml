@@ -7,7 +7,7 @@
 
 - name: Install nginx
   include: nginx.yml
-  when: nginx_current.rc != 0 or nginx_current.stderr.find('nginx/{{ nginx_version }}') == -1
+  when: nginx_current.rc != 0 or not nginx_current.stderr | search(nginx_version_string_match)
 
 - include: config.yml
 

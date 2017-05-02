@@ -63,9 +63,8 @@
     - common/client-performance-inline.conf
     - common/cloudflare.conf
     - common/drop.conf
+    - common/fix-slashes.conf
     - common/munin-node.conf
-    - common/remove-dupe-slashes.conf
-    - common/remove-trailing-slash.conf
     - common/secure-ssl.conf
     - fastcgi.conf
     - mime.types
