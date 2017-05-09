@@ -27,7 +27,8 @@
 - name: add systemd service
   copy:
     src: nginx.service.ini
-    dest: /lib/systemd/system/nginx.service mode=0644
+    dest: /lib/systemd/system/nginx.service
+    mode: 0644
   become: yes
   when: systemctl_version.rc == 0
   notify: restart_nginx
