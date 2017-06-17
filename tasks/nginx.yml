@@ -33,11 +33,24 @@
     - zlib-{{ zlib_version }}.tar.gz
     - openssl-{{ openssl_version }}.tar.gz
 
-- name: clone ngx_brotli
-  git:
-    repo: https://github.com/google/ngx_brotli.git
-    dest: /tmp/ngx_brotli
-    accept_hostkey: yes
+- name: cleanups
+  shell: rm -rf {{ item }}
+  with_items:
+    - /tmp/ngx_brotli-*
+    - /tmp/headers-more-nginx-module-*
+  become: yes
+
+- name: fetch ngx_brotli
+  unarchive:
+    src: https://github.com/google/ngx_brotli/archive/{{ nginx_brotli_version }}.zip
+    dest: /tmp
+    remote_src: True
+
+- name: fetch ngx_headers_more
+  unarchive:
+    src: https://github.com/openresty/headers-more-nginx-module/archive/v{{ nginx_headers_more_version }}.zip
+    dest: /tmp
+    remote_src: True
 
 - name: make clean
   command: make clean
@@ -85,7 +98,8 @@
     --with-http_v2_module
     --with-ipv6
     --without-http_memcached_module
-    --add-module=/tmp/ngx_brotli
+    --add-module=/tmp/ngx_brotli-{{ nginx_brotli_version }}
+    --add-module=/tmp/headers-more-nginx-module-{{ nginx_headers_more_version }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
 

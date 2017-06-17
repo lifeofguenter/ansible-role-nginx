@@ -1,30 +1,30 @@
 ---
 
-- name: Get current nginx version
+- name: get current nginx version
   command: /usr/sbin/nginx -v
   register: nginx_current
   ignore_errors: yes
 
-- name: Install nginx
+- name: install nginx
   include: nginx.yml
   when: nginx_current.rc != 0 or not nginx_current.stderr | search(nginx_version_string_match)
 
 - include: config.yml
 
-- name: Check if munin-node is installed
+- name: check if munin-node is installed
   command: dpkg -L munin-node
   register: dpkg_munin_node_check
   ignore_errors: yes
 
-- name: Configure munin plugin
+- name: configure munin plugin
   include: munin-plugin.yml
   when: dpkg_munin_node_check.rc == 0
 
-- name: Check if fail2ban is installed
+- name: check if fail2ban is installed
   command: dpkg -L fail2ban
   register: dpkg_fail2ban_check
   ignore_errors: yes
 
-- name: Configure fail2ban jail
+- name: configure fail2ban jail
   include: fail2ban-jail.yml
   when: dpkg_fail2ban_check.rc == 0
