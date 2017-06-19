@@ -40,11 +40,17 @@
     - /tmp/headers-more-nginx-module-*
   become: yes
 
-- name: fetch ngx_brotli
-  unarchive:
-    src: https://github.com/google/ngx_brotli/archive/{{ nginx_brotli_version }}.zip
-    dest: /tmp
-    remote_src: True
+#- name: fetch ngx_brotli
+#  unarchive:
+#    src: https://github.com/google/ngx_brotli/archive/{{ nginx_brotli_version }}.zip
+#    dest: /tmp
+#    remote_src: True
+
+- name: clone ngx_brotli
+  git:
+    repo: https://github.com/google/ngx_brotli.git
+    dest: /tmp/ngx_brotli-{{ nginx_brotli_version }}
+    accept_hostkey: yes
 
 - name: fetch ngx_headers_more
   unarchive:
