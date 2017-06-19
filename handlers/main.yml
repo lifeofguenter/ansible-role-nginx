@@ -7,13 +7,13 @@
     state: restarted
   become: yes
 
-- name: restart_munin_node
+- name: nginx_restart_munin_node
   service:
     name: munin-node
     state: restarted
   become: yes
 
-- name: restart_fail2ban
+- name: nginx_restart_fail2ban
   service:
     name: fail2ban
     state: restarted

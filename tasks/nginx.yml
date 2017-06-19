@@ -10,7 +10,6 @@
     - make
     - gcc
     - g++
-    - libc6-dev
   become: yes
 
 - name: download sources
@@ -24,7 +23,7 @@
     - http://zlib.net/zlib-{{ zlib_version }}.tar.gz
 
 - name: extract archives
-  command: tar xfz {{ item }} creates=/tmp/{{ item | replace(".tar.gz", "") }}
+  command: tar xf {{ item }} creates=/tmp/{{ item | replace(".tar.gz", "") }}
   args:
     chdir: /tmp/
   with_items:
