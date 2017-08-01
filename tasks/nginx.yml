@@ -80,6 +80,7 @@
     --http-scgi-temp-path=/var/cache/nginx/scgi
     --without-select_module
     --without-poll_module
+    --with-cpu-opt=pentium4
     --with-pcre=../pcre-{{ pcre_version }}
     --with-pcre-jit
     --with-zlib=../zlib-{{ zlib_version }}
@@ -93,6 +94,7 @@
     --with-http_mp4_module
     --with-http_gunzip_module
     --with-http_gzip_static_module
+    --with-http_auth_request_module
     --with-http_random_index_module
     --with-http_secure_link_module
     --with-http_stub_status_module
