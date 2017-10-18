@@ -1,8 +1,8 @@
 ---
 
-nginx_version: 1.12.1
+nginx_version: 1.12.2
 
-pcre_version: "8.40"
+pcre_version: "8.41"
 
 zlib_version: 1.2.11
 
