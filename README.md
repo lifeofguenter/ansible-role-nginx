@@ -1,40 +1,51 @@
 [![Build Status](https://travis-ci.org/lifeofguenter/ansible-role-nginx.svg?branch=master)](https://travis-ci.org/lifeofguenter/ansible-role-nginx)
 
-Role Name
-=========
+# lifeofguenter.nginx
 
-This role will compile nginx from source.
+This role will compile nginx from source on Debian-like systems.
 
-Requirements
-------------
+## Requirements
 
--
+None
 
-Role Variables
---------------
+## Role Variables
 
--
+```yaml
 
-Dependencies
-------------
+nginx_version: 1.12.2
 
--
+pcre_version: "8.41"
 
-Example Playbook
-----------------
+zlib_version: 1.2.11
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+openssl_version: 1.1.0f
 
-    - hosts: servers
-      roles:
-         - { role: lifeofguenter.nginx }
+# 3rd-party modules
+nginx_brotli_version: master
 
-License
--------
+nginx_headers_more_version: 0.32
 
-MIT
+nginx_worker_connections: 2048
 
-Author Information
-------------------
+```
 
--
+## Dependencies
+
+None
+
+## Example Playbook
+
+```yaml
+
+- hosts: webservers
+  roles:
+    - { role: lifeofguenter.nginx }
+```
+
+## License
+
+Licensed under the MIT License. See the [LICENSE file](LICENSE) for details.
+
+## Author Information
+
+[Gunter Grodotzki](https://lifeofguenter.de)
