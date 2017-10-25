@@ -8,7 +8,7 @@
 - include_tasks: nginx.yml
   when: nginx_current.rc != 0 or not nginx_current.stderr | search(nginx_version_string_match)
 
-- include: config.yml
+- include_tasks: config.yml
 
 - name: check if munin-node is installed
   command: dpkg -L munin-node
