@@ -12,38 +12,25 @@
     - g++
   become: yes
 
-- name: download sources
-  get_url:
-    url: "{{ item }}"
-    dest: /tmp/
+- name: fetch sources
+  unarchive:
+    src: "{{ item }}"
+    dest: /tmp
+    remote_src: yes
   with_items:
     - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
     - http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-{{ pcre_version }}.tar.gz
     - https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
     - http://zlib.net/zlib-{{ zlib_version }}.tar.gz
 
-- name: extract archives
-  command: tar xf {{ item }} creates=/tmp/{{ item | replace(".tar.gz", "") }}
-  args:
-    chdir: /tmp/
-  with_items:
-    - nginx-{{ nginx_version }}.tar.gz
-    - pcre-{{ pcre_version }}.tar.gz
-    - zlib-{{ zlib_version }}.tar.gz
-    - openssl-{{ openssl_version }}.tar.gz
-
 - name: cleanups
-  shell: rm -rf {{ item }}
+  file:
+    path: "{{ item }}"
+    state: absent
   with_items:
-    - /tmp/ngx_brotli-*
-    - /tmp/headers-more-nginx-module-*
+    - /tmp/ngx_brotli-{{ nginx_brotli_version }}
+    - /tmp/headers-more-nginx-module-{{ nginx_headers_more_version }}
   become: yes
-
-#- name: fetch ngx_brotli
-#  unarchive:
-#    src: https://github.com/google/ngx_brotli/archive/{{ nginx_brotli_version }}.zip
-#    dest: /tmp
-#    remote_src: True
 
 - name: clone ngx_brotli
   git:
