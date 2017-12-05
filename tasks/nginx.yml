@@ -19,7 +19,7 @@
     remote_src: yes
   with_items:
     - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
-    - http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-{{ pcre_version }}.tar.gz
+    - https://ftp.pcre.org/pub/pcre/pcre-{{ pcre_version }}.tar.gz
     - https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
     - http://zlib.net/zlib-{{ zlib_version }}.tar.gz
 
@@ -97,7 +97,7 @@
     chdir: /tmp/nginx-{{ nginx_version }}
 
 - name: make
-  command: make
+  command: make -j{{ ansible_processor_vcpus }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
 
