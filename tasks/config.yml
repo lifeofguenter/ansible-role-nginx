@@ -85,4 +85,3 @@
     src: vhost.conf
     dest: /etc/nginx/vhosts/default.conf
   become: yes
-  notify: restart_nginx
