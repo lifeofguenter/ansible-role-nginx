@@ -6,11 +6,11 @@ pcre_version: "8.41"
 
 zlib_version: 1.2.11
 
-openssl_version: 1.1.0f
+openssl_version: 1.1.0g
 
 # 3rd-party modules
 nginx_brotli_version: master
 
-nginx_headers_more_version: 0.32
+nginx_headers_more_version: 0.33
 
 nginx_worker_connections: 2048
