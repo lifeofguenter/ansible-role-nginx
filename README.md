@@ -12,18 +12,18 @@ None
 
 ```yaml
 
-nginx_version: 1.12.2
+nginx_version: 1.14.0
 
-pcre_version: "8.41"
+pcre_version: "8.42"
 
 zlib_version: 1.2.11
 
-openssl_version: 1.1.0f
+openssl_version: 1.1.0h
 
 # 3rd-party modules
 nginx_brotli_version: master
 
-nginx_headers_more_version: 0.32
+nginx_headers_more_version: 0.33
 
 nginx_worker_connections: 2048
 

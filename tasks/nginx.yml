@@ -10,6 +10,7 @@
     - make
     - gcc
     - g++
+    - unzip
   become: yes
 
 - name: fetch sources
