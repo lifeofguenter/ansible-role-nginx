@@ -18,7 +18,7 @@ pcre_version: "8.42"
 
 zlib_version: 1.2.11
 
-openssl_version: 1.1.0h
+openssl_version: 1.1.0i
 
 # 3rd-party modules
 nginx_brotli_version: master
