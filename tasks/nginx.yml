@@ -2,15 +2,16 @@
 
 - name: install dependencies
   apt:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
     update_cache: yes
     cache_valid_time: 3600
-  with_items:
-    - make
-    - gcc
-    - g++
-    - unzip
+  vars:
+    packages:
+      - make
+      - gcc
+      - g++
+      - unzip
   become: yes
 
 - name: fetch sources

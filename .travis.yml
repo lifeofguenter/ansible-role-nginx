@@ -9,7 +9,7 @@ dist: trusty
 addons:
   apt:
     packages:
-    - python-setuptools
+      - python-setuptools
 
 install:
   - sudo -H easy_install pip
