@@ -98,8 +98,9 @@
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
 
+# removing temporarily -j{{ ansible_processor_vcpus }} due to: https://github.com/openssl/openssl/issues/7679
 - name: make
-  command: make -j{{ ansible_processor_vcpus }}
+  command: make
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
 
