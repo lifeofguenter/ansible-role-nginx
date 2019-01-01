@@ -12,13 +12,13 @@ None
 
 ```yaml
 
-nginx_version: 1.14.0
+nginx_version: 1.14.2
 
 pcre_version: "8.42"
 
 zlib_version: 1.2.11
 
-openssl_version: 1.1.0i
+openssl_version: 1.1.0j
 
 # 3rd-party modules
 nginx_brotli_version: master
