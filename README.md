@@ -21,9 +21,13 @@ zlib_version: 1.2.11
 openssl_version: 1.1.0j
 
 # 3rd-party modules
-nginx_brotli_version: master
+ngx_brotli_version: 0.1.2
 
-nginx_headers_more_version: 0.33
+brotli_version: 1.0.4
+
+ngx_headers_more_version: 0.33
+
+ngx_fancyindex_version: 0.4.3
 
 nginx_worker_connections: 2048
 

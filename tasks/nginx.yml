@@ -30,33 +30,40 @@
     path: "{{ item }}"
     state: absent
   with_items:
-    - /tmp/ngx_brotli-{{ nginx_brotli_version }}
-    - /tmp/headers-more-nginx-module-{{ nginx_headers_more_version }}
+    - /tmp/ngx_brotli-{{ ngx_brotli_version }}
+    - /tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
+    - /tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
   become: yes
 
 - name: fetch ngx_brotli
   unarchive:
-    src: https://github.com/eustas/ngx_brotli/archive/v{{ nginx_brotli_version }}.tar.gz
+    src: https://github.com/eustas/ngx_brotli/archive/v{{ ngx_brotli_version }}.tar.gz
     dest: /tmp
     remote_src: yes
 
 - name: fetch ngx_brotli
   unarchive:
     src: https://github.com/google/brotli/archive/v{{ brotli_version }}.tar.gz
-    dest: /tmp/ngx_brotli-{{ nginx_brotli_version }}/deps/
+    dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/
     remote_src: yes
 
 - name: remove brotli folder
   file:
-    path: /tmp/ngx_brotli-{{ nginx_brotli_version }}/deps/brotli
+    path: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
     state: absent
 
 - name: rename brotli folder
-  command: mv /tmp/ngx_brotli-{{ nginx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ nginx_brotli_version }}/deps/brotli
+  command: mv /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
 
 - name: fetch ngx_headers_more
   unarchive:
-    src: https://github.com/openresty/headers-more-nginx-module/archive/v{{ nginx_headers_more_version }}.zip
+    src: https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
+    dest: /tmp
+    remote_src: yes
+
+- name: fetch ngx_fancyindex
+  unarchive:
+    src: https://github.com/aperezdc/ngx-fancyindex/archive/v{{ ngx_fancyindex_version }}.tar.gz
     dest: /tmp
     remote_src: yes
 
@@ -107,8 +114,9 @@
     --with-http_v2_module
     --with-ipv6
     --without-http_memcached_module
-    --add-module=/tmp/ngx_brotli-{{ nginx_brotli_version }}
-    --add-module=/tmp/headers-more-nginx-module-{{ nginx_headers_more_version }}
+    --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
+    --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
+    --add-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
 
@@ -121,6 +129,6 @@
 - name: install
   command: make install
   args:
-    chdir: /tmp/nginx-{{ nginx_version }} 
+    chdir: /tmp/nginx-{{ nginx_version }}
   become: yes
   notify: restart_nginx
