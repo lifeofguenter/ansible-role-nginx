@@ -5,14 +5,16 @@ galaxy_info:
   description: Compiles & installs Nginx from source.
   company: 9JKH (Pty) Ltd.
   license: MIT
-  min_ansible_version: 2.5
+  min_ansible_version: 2.8
   platforms:
     - name: Ubuntu
       versions:
+        - bionic
         - xenial
         - trusty
     - name: Debian
       versions:
+        - buster
         - stretch
         - jessie
   galaxy_tags:
