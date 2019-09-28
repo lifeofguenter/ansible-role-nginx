@@ -37,11 +37,11 @@
 
 - name: fetch ngx_brotli
   unarchive:
-    src: https://github.com/eustas/ngx_brotli/archive/v{{ ngx_brotli_version }}.tar.gz
+    src: https://github.com/google/ngx_brotli/archive/{{ ngx_brotli_version }}.zip
     dest: /tmp
     remote_src: yes
 
-- name: fetch ngx_brotli
+- name: fetch brotli
   unarchive:
     src: https://github.com/google/brotli/archive/v{{ brotli_version }}.tar.gz
     dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/
