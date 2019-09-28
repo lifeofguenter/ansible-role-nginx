@@ -41,14 +41,6 @@
     dest: /tmp
     remote_src: yes
 
-- name: remove brotli folder
-  file:
-    path: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
-    state: absent
-
-- name: rename brotli folder
-  command: mv /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
-
 - name: fetch ngx_headers_more
   unarchive:
     src: https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
