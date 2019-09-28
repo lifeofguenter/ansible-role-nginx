@@ -37,14 +37,8 @@
 
 - name: fetch ngx_brotli
   unarchive:
-    src: https://github.com/eustas/ngx_brotli/archive/v{{ ngx_brotli_version }}.tar.gz
+    src: https://github.com/google/ngx_brotli/archive/${ngx_brotli_version}.zip
     dest: /tmp
-    remote_src: yes
-
-- name: fetch ngx_brotli
-  unarchive:
-    src: https://github.com/google/brotli/archive/v{{ brotli_version }}.tar.gz
-    dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/
     remote_src: yes
 
 - name: remove brotli folder
@@ -114,7 +108,7 @@
     --with-http_v2_module
     --with-ipv6
     --without-http_memcached_module
-    --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
+    --add-module=/tmp/nngx_brotli-{{ ngx_brotli_version }}
     --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
     --add-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
   args:
