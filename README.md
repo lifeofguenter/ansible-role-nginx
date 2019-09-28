@@ -14,11 +14,13 @@ None
 
 nginx_version: 1.16.1
 
-pcre_version: "8.43"
+pcre_version: 8.43
 
 zlib_version: 1.2.11
 
 openssl_version: 1.1.1d
+
+brotli_version: 1.0.7
 
 # 3rd-party modules
 ngx_brotli_version: master
