@@ -6,7 +6,7 @@ pcre_version: 8.44
 
 zlib_version: 1.2.11
 
-openssl_version: 1.1.1j
+openssl_version: 1.1.1k
 
 brotli_version: 1.0.9
 
@@ -16,6 +16,8 @@ ngx_brotli_version: master
 ngx_headers_more_version: 0.33
 
 ngx_fancyindex_version: 0.5.1
+
+ngx_modsecurity_version: 1.0.1
 
 # config defaults
 nginx_worker_connections: 2048

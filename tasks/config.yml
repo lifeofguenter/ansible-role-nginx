@@ -19,33 +19,15 @@
     dest: /etc/logrotate.d/nginx
   become: yes
 
-- name: check for systemd
-  command: systemctl --version
-  register: systemctl_version
-  ignore_errors: yes
-
 - name: add systemd service
   copy:
     src: nginx.service.ini
     dest: /lib/systemd/system/nginx.service
     mode: 0644
   become: yes
-  when: systemctl_version.rc == 0
-  notify: restart_nginx
-
-- name: reload systemd
-  command: systemctl daemon-reload
-  when: systemctl_version.rc == 0
-  become: yes
-
-- name: add sysvinit service
-  copy:
-    src: init.sh
-    dest: /etc/init.d/nginx
-    mode: "a+x"
-  become: yes
-  when: systemctl_version.rc != 0
-  notify: restart_nginx
+  notify:
+    - nginx_systemd_reload
+    - restart_nginx
 
 - name: add htpasswd script
   copy:

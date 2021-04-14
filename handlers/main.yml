@@ -1,10 +1,15 @@
 ---
 
 - name: restart_nginx
-  service:
+  ansible.builtin.systemd:
     name: nginx
     enabled: yes
     state: restarted
+  become: yes
+
+- name: nginx_systemd_reload
+  ansible.builtin.systemd:
+    daemon_reload: yes
   become: yes
 
 - name: nginx_restart_munin_node
