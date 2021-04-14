@@ -9,12 +9,10 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - focal
-        - bionic
-        - xenial
     - name: Debian
       versions:
+        - bullseye
         - buster
-        - stretch
   galaxy_tags:
     - system
     - development

@@ -1,6 +1,7 @@
 .DS_Store
-*.un~
 *~
-/.project
 /.idea/
 /.env
+
+*.retry
+/.roles
