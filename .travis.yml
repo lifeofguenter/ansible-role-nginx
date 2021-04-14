@@ -6,6 +6,9 @@ language: python
 python: "3.7"
 sudo: required
 
+env:
+  - ANSIBLE_PYTHON_INTERPRETER=/usr/bin/python3
+
 install:
   - sudo add-apt-repository universe
   - sudo apt-get update
