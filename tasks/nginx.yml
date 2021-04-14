@@ -12,6 +12,7 @@
       - gcc
       - g++
       - unzip
+      - libmodsecurity-dev
   become: yes
 
 - name: fetch sources
@@ -33,13 +34,19 @@
     - /tmp/ngx_brotli-{{ ngx_brotli_version }}
     - /tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
     - /tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
+    - /tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
   become: yes
 
-- name: fetch ngx_brotli
+- name: download ngx_*
   unarchive:
-    src: https://github.com/google/ngx_brotli/archive/{{ ngx_brotli_version }}.zip
+    src: "{{ item }}"
     dest: /tmp
     remote_src: yes
+  with_items:
+    - https://github.com/google/ngx_brotli/archive/{{ ngx_brotli_version }}.zip
+    - https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
+    - https://github.com/aperezdc/ngx-fancyindex/archive/v{{ ngx_fancyindex_version }}.tar.gz
+    - https://github.com/SpiderLabs/ModSecurity-nginx/releases/download/v{{ ngx_modsecurity_version }}/modsecurity-nginx-v{{ ngx_modsecurity_version }}.tar.gz
 
 - name: fetch brotli
   unarchive:
@@ -54,18 +61,6 @@
 
 - name: rename brotli folder
   command: mv /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
-
-- name: fetch ngx_headers_more
-  unarchive:
-    src: https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
-    dest: /tmp
-    remote_src: yes
-
-- name: fetch ngx_fancyindex
-  unarchive:
-    src: https://github.com/aperezdc/ngx-fancyindex/archive/v{{ ngx_fancyindex_version }}.tar.gz
-    dest: /tmp
-    remote_src: yes
 
 - name: make clean
   command: make clean
@@ -117,12 +112,12 @@
     --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
     --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
     --add-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
+    --add-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
 
-# removing temporarily -j{{ ansible_processor_vcpus }} due to: https://github.com/openssl/openssl/issues/7679
 - name: make
-  command: make
+  command: make -j{{ ansible_processor_vcpus }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
 

@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/lifeofguenter/ansible-role-nginx.svg?branch=master)](https://travis-ci.org/lifeofguenter/ansible-role-nginx)
-
 # lifeofguenter.nginx
+
+[![Build Status](https://travis-ci.com/lifeofguenter/ansible-role-nginx.svg?branch=master)](https://travis-ci.com/lifeofguenter/ansible-role-nginx)
 
 This role will compile nginx from source on Debian-like systems.
 
@@ -18,16 +18,18 @@ pcre_version: 8.44
 
 zlib_version: 1.2.11
 
-openssl_version: 1.1.1g
+openssl_version: 1.1.1k
 
-brotli_version: 1.0.7
+brotli_version: 1.0.9
 
 # 3rd-party modules
 ngx_brotli_version: master
 
 ngx_headers_more_version: 0.33
 
-ngx_fancyindex_version: 0.4.4
+ngx_fancyindex_version: 0.5.1
+
+ngx_modsecurity_version: 1.0.1
 
 # config defaults
 nginx_worker_connections: 2048

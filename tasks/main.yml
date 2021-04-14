@@ -4,6 +4,7 @@
   command: /usr/sbin/nginx -v
   register: nginx_current
   ignore_errors: yes
+  changed_when: no
 
 - import_tasks: nginx.yml
   when: nginx_current.rc != 0 or not nginx_current.stderr is search(nginx_version_string_match)
@@ -14,6 +15,7 @@
   command: dpkg -L munin-node
   register: dpkg_munin_node_check
   ignore_errors: yes
+  changed_when: no
 
 - import_tasks: munin-plugin.yml
   when: dpkg_munin_node_check is success
@@ -22,6 +24,7 @@
   command: dpkg -L fail2ban
   register: dpkg_fail2ban_check
   ignore_errors: yes
+  changed_when: no
 
 - import_tasks: fail2ban-jail.yml
   when: dpkg_fail2ban_check is success
