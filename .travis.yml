@@ -7,6 +7,9 @@ python: "3.7"
 sudo: required
 
 install:
+  - add-apt-repository universe
+  - apt-get update
+
   # Install ansible
   - pip install -U ansible
 
