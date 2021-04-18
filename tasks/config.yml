@@ -17,6 +17,7 @@
   copy:
     src: logrotate
     dest: /etc/logrotate.d/nginx
+    mode: 0644
   become: yes
 
 - name: add systemd service
@@ -33,7 +34,7 @@
   copy:
     src: htpasswd.sh
     dest: /usr/local/bin/htpasswd
-    mode: "a+x"
+    mode: a+x
   become: yes
 
 - name: adding base config files
@@ -41,6 +42,7 @@
     force: yes
     src: "{{ item }}"
     dest: /etc/nginx/{{ item }}
+    mode: 0644
   with_items:
     - common/client-performance.conf
     - common/client-performance-inline.conf
@@ -58,6 +60,7 @@
   template:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
+    mode: 0644
   become: yes
   notify: restart_nginx
 
@@ -66,4 +69,5 @@
     force: no
     src: vhost.conf
     dest: /etc/nginx/vhosts/default.conf
+    mode: 0644
   become: yes

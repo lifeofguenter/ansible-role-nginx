@@ -61,11 +61,13 @@
 
 - name: rename brotli folder
   command: mv /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
+  changed_when: yes
 
 - name: make clean
   command: make clean
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
+  changed_when: yes
   ignore_errors: yes
 
 - name: configure
@@ -115,15 +117,18 @@
     --add-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
+  changed_when: yes
 
 - name: make
   command: make -j{{ ansible_processor_vcpus }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
+  changed_when: yes
 
 - name: install
   command: make install
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
+  changed_when: yes
   become: yes
   notify: restart_nginx
