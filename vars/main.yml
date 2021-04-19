@@ -1,3 +1,5 @@
 ---
 
 nginx_version_string_match: nginx/{{ nginx_version }}
+
+openssl_version_string_match: OpenSSL {{ openssl_version }}
