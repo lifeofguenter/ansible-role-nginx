@@ -12,7 +12,7 @@ None
 
 ```yaml
 
-nginx_version: 1.18.0
+nginx_version: 1.20.0
 
 pcre_version: 8.44
 
