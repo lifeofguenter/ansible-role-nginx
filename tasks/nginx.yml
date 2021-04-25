@@ -35,6 +35,7 @@
     - /tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
     - /tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
     - /tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
+    - /tmp/njs-{{ ngx_njs_version }}
   become: yes
 
 - name: download ngx_*
@@ -47,6 +48,7 @@
     - https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
     - https://github.com/aperezdc/ngx-fancyindex/archive/v{{ ngx_fancyindex_version }}.tar.gz
     - https://github.com/SpiderLabs/ModSecurity-nginx/releases/download/v{{ ngx_modsecurity_version }}/modsecurity-nginx-v{{ ngx_modsecurity_version }}.tar.gz
+    - https://github.com/nginx/njs/archive/refs/tags/{{ ngx_njs_version }}.tar.gz
 
 - name: fetch brotli
   unarchive:
@@ -87,34 +89,26 @@
     --http-scgi-temp-path=/var/cache/nginx/scgi
     --without-select_module
     --without-poll_module
+    --with-threads
+    --with-file-aio
     --with-pcre=../pcre-{{ pcre_version }}
     --with-pcre-jit
     --with-zlib=../zlib-{{ zlib_version }}
-    --with-zlib-asm=pentiumpro
     --with-http_ssl_module
     --with-openssl=../openssl-{{ openssl_version }}
-    --with-http_addition_module
     --with-http_realip_module
-    --with-http_sub_module
-    --with-http_flv_module
-    --with-http_mp4_module
+    --with-http_stub_status_module
+    --with-http_v2_module
     --with-http_gunzip_module
     --with-http_gzip_static_module
     --with-http_auth_request_module
-    --with-http_random_index_module
     --with-http_secure_link_module
-    --with-http_stub_status_module
-    --with-http_auth_request_module
-    --with-http_stub_status_module
-    --with-threads
-    --with-file-aio
-    --with-http_v2_module
-    --with-ipv6
     --without-http_memcached_module
     --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
     --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
-    --add-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
-    --add-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
+    --add-dynamic-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
+    --add-dynamic-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
+    --add-dynamic-module=/tmp/njs-{{ ngx_njs_version }}/nginx
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   changed_when: yes
