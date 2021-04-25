@@ -19,5 +19,7 @@ ngx_fancyindex_version: 0.5.1
 
 ngx_modsecurity_version: 1.0.1
 
+ngx_njs_version: 0.5.3
+
 # config defaults
 nginx_worker_connections: 2048
