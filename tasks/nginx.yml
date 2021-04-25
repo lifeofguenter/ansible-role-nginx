@@ -109,7 +109,7 @@
     --add-dynamic-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
     --add-dynamic-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
     --add-dynamic-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
-    --add-dynamic-module=/tmp/njs-{{ ngx_njs_version }}
+    --add-dynamic-module=/tmp/njs-{{ ngx_njs_version }}/nginx
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   changed_when: yes
