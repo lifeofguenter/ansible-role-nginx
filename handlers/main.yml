@@ -13,13 +13,13 @@
   become: yes
 
 - name: nginx_restart_munin_node
-  service:
+  ansible.builtin.systemd:
     name: munin-node
     state: restarted
   become: yes
 
 - name: nginx_restart_fail2ban
-  service:
+  ansible.builtin.systemd:
     name: fail2ban
     state: restarted
   become: yes
