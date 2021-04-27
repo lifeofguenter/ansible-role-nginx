@@ -1,8 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [[ "${1}" = "" ]]; then
+set -eo pipefail
+
+if [[ -z "${1}" ]]; then
   echo "usage: htpasswd username"
   exit 1
 fi
-printf "${1}:`openssl passwd -apr1`\n" | sudo tee -a /etc/nginx/htpasswd.conf > /dev/null
-exit 0
+
+hashed="${1}:$(openssl passwd -apr1)"
+echo "${hashed}" | sudo tee -a /etc/nginx/htpasswd.conf > /dev/null
+hashed=""
