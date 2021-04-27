@@ -27,7 +27,7 @@
     mode: 0644
   become: yes
   notify:
-    - nginx_systemd_reload
+    - reload_systemd
     - restart_nginx
 
 - name: add htpasswd script
