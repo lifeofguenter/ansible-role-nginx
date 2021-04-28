@@ -2,17 +2,17 @@
 
 - name: install dependencies
   apt:
-    name: "{{ packages }}"
-    state: present
-    update_cache: yes
-    cache_valid_time: 3600
-  vars:
-    packages:
+    name:
       - make
       - gcc
       - g++
       - unzip
       - libmodsecurity-dev
+      - libpcre3-dev
+      - zlib1g-dev
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
   become: yes
 
 - name: fetch sources
@@ -22,9 +22,7 @@
     remote_src: yes
   with_items:
     - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
-    - https://ftp.pcre.org/pub/pcre/pcre-{{ pcre_version }}.tar.gz
     - https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
-    - http://zlib.net/zlib-{{ zlib_version }}.tar.gz
 
 - name: cleanups
   file:
@@ -91,9 +89,6 @@
     --without-poll_module
     --with-threads
     --with-file-aio
-    --with-pcre=../pcre-{{ pcre_version }}
-    --with-pcre-jit
-    --with-zlib=../zlib-{{ zlib_version }}
     --with-http_ssl_module
     --with-openssl=../openssl-{{ openssl_version }}
     --with-http_realip_module
