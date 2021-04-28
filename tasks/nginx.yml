@@ -109,7 +109,7 @@
   changed_when: yes
 
 - name: make
-  command: make -j{{ ansible_processor_vcpus }}
+  command: make -j{{ nginx_make_jobs }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   changed_when: yes
