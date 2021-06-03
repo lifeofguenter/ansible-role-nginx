@@ -12,7 +12,7 @@ None
 
 ```yaml
 
-nginx_version: 1.20.0
+nginx_version: 1.20.1
 
 openssl_version: 1.1.1k
 
