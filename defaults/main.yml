@@ -13,9 +13,9 @@ ngx_headers_more_version: 0.33
 
 ngx_fancyindex_version: 0.5.1
 
-ngx_modsecurity_version: 1.0.1
+ngx_modsecurity_version: 1.0.2
 
-ngx_njs_version: 0.5.3
+ngx_njs_version: 0.6.1
 
 # config defaults
 nginx_worker_connections: 2048
