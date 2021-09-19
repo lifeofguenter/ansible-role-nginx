@@ -14,7 +14,7 @@ None
 
 nginx_version: 1.20.1
 
-openssl_version: 1.1.1k
+openssl_version: 1.1.1l
 
 brotli_version: 1.0.9
 
@@ -27,7 +27,7 @@ ngx_fancyindex_version: 0.5.1
 
 ngx_modsecurity_version: 1.0.2
 
-ngx_njs_version: 0.6.1
+ngx_njs_version: 0.6.2
 
 # config defaults
 nginx_worker_connections: 2048
