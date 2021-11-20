@@ -1,6 +1,6 @@
 # lifeofguenter.nginx
 
-[![Build Status](https://travis-ci.com/lifeofguenter/ansible-role-nginx.svg?branch=master)](https://travis-ci.com/lifeofguenter/ansible-role-nginx)
+[![Build Status](https://travis-ci.com/lifeofguenter/ansible-role-nginx.svg?branch=main)](https://travis-ci.com/lifeofguenter/ansible-role-nginx)
 
 This role will compile nginx from source on Debian-like systems.
 
@@ -12,9 +12,9 @@ None
 
 ```yaml
 
-nginx_version: 1.20.1
+nginx_version: 1.20.2
 
-openssl_version: 1.1.1l
+openssl_version: 3.0.0
 
 brotli_version: 1.0.9
 
@@ -23,11 +23,11 @@ ngx_brotli_version: master
 
 ngx_headers_more_version: 0.33
 
-ngx_fancyindex_version: 0.5.1
+ngx_fancyindex_version: 0.5.2
 
 ngx_modsecurity_version: 1.0.2
 
-ngx_njs_version: 0.6.2
+ngx_njs_version: 0.7.0
 
 # config defaults
 nginx_worker_connections: 2048
@@ -59,4 +59,4 @@ Licensed under the MIT License. See the [LICENSE file](LICENSE) for details.
 
 ## Author Information
 
-[Gunter Grodotzki](https://lifeofguenter.de)
+[Günter Grodotzki](https://lifeofguenter.de)

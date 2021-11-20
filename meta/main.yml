@@ -1,7 +1,8 @@
 ---
 
 galaxy_info:
-  author: Gunter Grodotzki
+  role_name: nginx
+  author: Günter Grodotzki
   description: Compiles & installs Nginx from source.
   license: MIT
   min_ansible_version: '2.10'
