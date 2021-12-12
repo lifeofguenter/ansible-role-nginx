@@ -38,6 +38,11 @@ nginx_load_modules:
   #- http_js
   - http_modsecurity
 
+nginx_resolvers:
+  - 1.1.1.1
+  - 8.8.8.8
+
+nginx_resolver_timeout: 2s
 ```
 
 ## Dependencies

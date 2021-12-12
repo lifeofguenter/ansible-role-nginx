@@ -29,3 +29,5 @@ nginx_load_modules:
 nginx_resolvers:
   - 1.1.1.1
   - 8.8.8.8
+
+nginx_resolver_timeout: 2s
