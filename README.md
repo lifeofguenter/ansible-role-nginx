@@ -14,7 +14,7 @@ None
 
 nginx_version: 1.20.2
 
-openssl_version: 3.0.0
+openssl_version: 3.0.1
 
 brotli_version: 1.0.9
 
