@@ -27,7 +27,7 @@ ngx_fancyindex_version: 0.5.2
 
 ngx_modsecurity_version: 1.0.2
 
-ngx_njs_version: 0.7.0
+ngx_njs_version: 0.7.1
 
 # config defaults
 nginx_worker_connections: 2048
@@ -64,4 +64,4 @@ Licensed under the MIT License. See the [LICENSE file](LICENSE) for details.
 
 ## Author Information
 
-[Günter Grodotzki](https://lifeofguenter.de)
+[Günter Grodotzki](https://www.lifeofguenter.de)

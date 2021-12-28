@@ -7,13 +7,25 @@
       - gcc
       - g++
       - unzip
-      - libmodsecurity-dev
       - libpcre3-dev
       - zlib1g-dev
     state: present
     update_cache: yes
     cache_valid_time: 3600
   become: yes
+
+- name: install libmodsecurity
+  apt:
+    name:
+      - libmodsecurity3
+      - libmodsecurity-dev
+  become: yes
+  when: "'http_modsecurity' in nginx_load_modules"
+
+- name: add modsecurity
+  set_fact:
+    nginx_compile_modsecurity: --add-dynamic-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
+  when: "'http_modsecurity' in nginx_load_modules"
 
 - name: fetch sources
   unarchive:
@@ -102,8 +114,8 @@
     --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
     --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
     --add-dynamic-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
-    --add-dynamic-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
     --add-dynamic-module=/tmp/njs-{{ ngx_njs_version }}/nginx
+    {{ nginx_compile_modsecurity }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   changed_when: yes
