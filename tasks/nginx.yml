@@ -24,7 +24,7 @@
 
 - name: add modsecurity
   set_fact:
-    nginx_compile_modsecurity: --add-dynamic-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
+    nginx_compile_modsecurity: "--add-dynamic-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}"
   when: 'http_modsecurity' in nginx_load_modules
 
 - name: fetch sources
