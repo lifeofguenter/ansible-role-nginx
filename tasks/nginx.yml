@@ -20,7 +20,7 @@
       - libmodsecurity
       - libmodsecurity-dev
   become: yes
-  when: 'http_modsecurity' in nginx_load_modules
+  when: "'http_modsecurity' in nginx_load_modules"
 
 - name: add modsecurity
   set_fact:
