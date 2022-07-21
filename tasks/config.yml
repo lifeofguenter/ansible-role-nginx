@@ -1,7 +1,7 @@
 ---
 
 - name: create folders
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: 0755
@@ -14,14 +14,14 @@
   become: yes
 
 - name: add logrotate config
-  copy:
+  ansible.builtin.copy:
     src: logrotate
     dest: /etc/logrotate.d/nginx
     mode: 0644
   become: yes
 
 - name: add systemd service
-  copy:
+  ansible.builtin.copy:
     src: nginx.service.ini
     dest: /lib/systemd/system/nginx.service
     mode: 0644
@@ -31,14 +31,14 @@
     - restart_nginx
 
 - name: add htpasswd script
-  copy:
+  ansible.builtin.copy:
     src: htpasswd.sh
     dest: /usr/local/bin/htpasswd
     mode: a+x
   become: yes
 
 - name: adding base config files
-  copy:
+  ansible.builtin.copy:
     force: yes
     src: "{{ item }}"
     dest: /etc/nginx/{{ item }}
@@ -57,7 +57,7 @@
   notify: restart_nginx
 
 - name: add nginx.conf
-  template:
+  ansible.builtin.template:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
     mode: 0644
@@ -65,7 +65,7 @@
   notify: restart_nginx
 
 - name: add default vhost config
-  copy:
+  ansible.builtin.copy:
     force: no
     src: vhost.conf
     dest: /etc/nginx/vhosts/default.conf

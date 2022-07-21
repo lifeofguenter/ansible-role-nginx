@@ -12,22 +12,22 @@ None
 
 ```yaml
 
-nginx_version: 1.20.2
+nginx_version: 1.22.0
 
-openssl_version: 3.0.1
+openssl_version: 3.0.5
 
 brotli_version: 1.0.9
 
 # 3rd-party modules
 ngx_brotli_version: master
 
-ngx_headers_more_version: 0.33
+ngx_headers_more_version: 0.34
 
 ngx_fancyindex_version: 0.5.2
 
-ngx_modsecurity_version: 1.0.2
+ngx_modsecurity_version: 1.0.3
 
-ngx_njs_version: 0.7.1
+ngx_njs_version: 0.7.6
 
 # config defaults
 nginx_worker_connections: 2048

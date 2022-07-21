@@ -1,7 +1,7 @@
 ---
 
 - name: install dependencies
-  apt:
+  ansible.builtin.apt:
     name:
       - make
       - gcc
@@ -15,7 +15,7 @@
   become: yes
 
 - name: install libmodsecurity
-  apt:
+  ansible.builtin.apt:
     name:
       - libmodsecurity3
       - libmodsecurity-dev
@@ -23,12 +23,12 @@
   when: "'http_modsecurity' in nginx_load_modules"
 
 - name: add modsecurity
-  set_fact:
+  ansible.builtin.set_fact:
     nginx_compile_modsecurity: --add-dynamic-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
   when: "'http_modsecurity' in nginx_load_modules"
 
 - name: fetch sources
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ item }}"
     dest: /tmp
     remote_src: yes
@@ -37,7 +37,7 @@
     - https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
 
 - name: cleanups
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   with_items:
@@ -49,7 +49,7 @@
   become: yes
 
 - name: download ngx_*
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ item }}"
     dest: /tmp
     remote_src: yes
@@ -61,29 +61,29 @@
     - https://github.com/nginx/njs/archive/refs/tags/{{ ngx_njs_version }}.tar.gz
 
 - name: fetch brotli
-  unarchive:
+  ansible.builtin.unarchive:
     src: https://github.com/google/brotli/archive/v{{ brotli_version }}.tar.gz
     dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/
     remote_src: yes
 
 - name: remove brotli folder
-  file:
+  ansible.builtin.file:
     path: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
     state: absent
 
 - name: rename brotli folder
-  command: mv /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
+  ansible.builtin.command: mv /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
   changed_when: yes
 
 - name: make clean
-  command: make clean
+  ansible.builtin.command: make clean
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   changed_when: yes
   ignore_errors: yes
 
 - name: configure
-  command: >
+  ansible.builtin.command: >
     ./configure
     --prefix=/usr/share/nginx
     --sbin-path=/usr/sbin/nginx
@@ -121,13 +121,13 @@
   changed_when: yes
 
 - name: make
-  command: make -j{{ nginx_make_jobs }}
+  ansible.builtin.command: make -j{{ nginx_make_jobs }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   changed_when: yes
 
 - name: install
-  command: make install
+  ansible.builtin.command: make install
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   changed_when: yes

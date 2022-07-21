@@ -1,7 +1,7 @@
 ---
 
 - name: add base jail config
-  copy:
+  ansible.builtin.copy:
     src: jail.conf
     dest: /etc/fail2ban/jail.d/nginx.conf.disabled
     mode: 0644
