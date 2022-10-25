@@ -1,34 +1,34 @@
 ---
 
-- name: get current nginx version
+- name: Get current nginx version
   ansible.builtin.command: /usr/sbin/nginx -V
   register: nginx_current
   ignore_errors: yes
   changed_when: no
 
-- name: import nginx.yml
+- name: Import nginx.yml
   ansible.builtin.import_tasks: nginx.yml
   when: nginx_current.rc != 0 or not nginx_current.stderr is search(nginx_version_string_match) or not nginx_current.stderr is search(openssl_version_string_match)  # noqa 204
 
-- name: import config.yml
+- name: Import config.yml
   ansible.builtin.import_tasks: config.yml
 
-- name: check if munin-node is installed
+- name: Check if munin-node is installed
   ansible.builtin.command: dpkg -L munin-node
   register: dpkg_munin_node_check
   ignore_errors: yes
   changed_when: no
 
-- name: import munin-plugin.yml
+- name: Import munin-plugin.yml
   ansible.builtin.import_tasks: munin-plugin.yml
   when: dpkg_munin_node_check is success
 
-- name: check if fail2ban is installed
+- name: Check if fail2ban is installed
   ansible.builtin.command: dpkg -L fail2ban
   register: dpkg_fail2ban_check
   ignore_errors: yes
   changed_when: no
 
-- name: import fail2ban-jail.yml
+- name: Import fail2ban-jail.yml
   ansible.builtin.import_tasks: fail2ban-jail.yml
   when: dpkg_fail2ban_check is success

@@ -1,6 +1,6 @@
 ---
 
-- name: add base jail config
+- name: Add base jail config
   ansible.builtin.copy:
     src: jail.conf
     dest: /etc/fail2ban/jail.d/nginx.conf.disabled

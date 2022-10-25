@@ -1,6 +1,6 @@
 ---
 
-- name: install dependencies
+- name: Install dependencies
   ansible.builtin.apt:
     name: libwww-perl
     state: present
@@ -8,7 +8,7 @@
     cache_valid_time: 3600
   become: yes
 
-- name: add nginx_request plugin
+- name: Add nginx_request plugin
   ansible.builtin.file:
     src: /usr/share/munin/plugins/nginx_request
     dest: /etc/munin/plugins/nginx_request
@@ -16,7 +16,7 @@
   notify: restart_munin_node
   become: yes
 
-- name: add nginx_status plugin
+- name: Add nginx_status plugin
   ansible.builtin.file:
     src: /usr/share/munin/plugins/nginx_status
     dest: /etc/munin/plugins/nginx_status
@@ -24,7 +24,7 @@
   notify: restart_munin_node
   become: yes
 
-- name: add munin plugin-conf
+- name: Add munin plugin-conf
   ansible.builtin.copy:
     content: |
       [nginx*]
