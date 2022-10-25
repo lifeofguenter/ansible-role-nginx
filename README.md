@@ -12,7 +12,7 @@ None
 
 ```yaml
 
-nginx_version: 1.22.0
+nginx_version: 1.22.1
 
 openssl_version: 3.0.5
 
@@ -27,7 +27,7 @@ ngx_fancyindex_version: 0.5.2
 
 ngx_modsecurity_version: 1.0.3
 
-ngx_njs_version: 0.7.6
+ngx_njs_version: 0.7.7
 
 # config defaults
 nginx_worker_connections: 2048
