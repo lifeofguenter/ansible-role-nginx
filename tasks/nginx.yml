@@ -111,6 +111,7 @@
     --with-http_auth_request_module
     --with-http_secure_link_module
     --without-http_memcached_module
+    --without-http_xslt_module
     --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
     --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
     --add-dynamic-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
