@@ -13,7 +13,7 @@
     src: /usr/share/munin/plugins/nginx_request
     dest: /etc/munin/plugins/nginx_request
     state: link
-  notify: restart_munin_node
+  notify: Restart_munin_node
   become: yes
 
 - name: Add nginx_status plugin
@@ -21,7 +21,7 @@
     src: /usr/share/munin/plugins/nginx_status
     dest: /etc/munin/plugins/nginx_status
     state: link
-  notify: restart_munin_node
+  notify: Restart_munin_node
   become: yes
 
 - name: Add munin plugin-conf
@@ -31,5 +31,5 @@
       env.url http://127.0.8.9/nginx_status
     dest: /etc/munin/plugin-conf.d/nginx_
     mode: 0644
-  notify: restart_munin_node
+  notify: Restart_munin_node
   become: yes

@@ -5,5 +5,5 @@
     src: jail.conf
     dest: /etc/fail2ban/jail.d/nginx.conf.disabled
     mode: 0644
-  notify: restart_fail2ban
+  notify: Restart_fail2ban
   become: yes

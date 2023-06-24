@@ -9,6 +9,7 @@
       - unzip
       - libpcre3-dev
       - zlib1g-dev
+      - libxslt-dev
     state: present
     update_cache: yes
     cache_valid_time: 3600
@@ -132,4 +133,4 @@
     chdir: /tmp/nginx-{{ nginx_version }}
   changed_when: yes
   become: yes
-  notify: restart_nginx
+  notify: Restart_nginx

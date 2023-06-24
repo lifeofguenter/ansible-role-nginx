@@ -27,8 +27,8 @@
     mode: 0644
   become: yes
   notify:
-    - reload_systemd
-    - restart_nginx
+    - Reload_systemd
+    - Restart_nginx
 
 - name: Add htpasswd script
   ansible.builtin.copy:
@@ -54,7 +54,7 @@
     - fastcgi.conf
     - mime.types
   become: yes
-  notify: restart_nginx
+  notify: Restart_nginx
 
 - name: Add nginx.conf
   ansible.builtin.template:
@@ -62,7 +62,7 @@
     dest: /etc/nginx/nginx.conf
     mode: 0644
   become: yes
-  notify: restart_nginx
+  notify: Restart_nginx
 
 - name: Add default vhost config
   ansible.builtin.copy:
