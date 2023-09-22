@@ -3,6 +3,3 @@
 nginx_version_string_match: nginx/{{ nginx_version }}
 
 nginx_make_jobs: '{{ ansible_processor_vcpus }}'
-
-nginx_build_cflags: -m64 -march=native -mtune=native -Ofast -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections
-nginx_build_ldflags: -m64 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections
