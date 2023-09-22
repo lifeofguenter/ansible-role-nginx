@@ -11,7 +11,6 @@
   when: >-
     nginx_current.rc != 0
     or not nginx_current.stderr is search(nginx_version_string_match)
-    or not nginx_current.stderr is search(nginx_openssl_version_string_match)
 
 - name: Import config.yml
   ansible.builtin.import_tasks: config.yml

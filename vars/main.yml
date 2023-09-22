@@ -2,8 +2,6 @@
 
 nginx_version_string_match: nginx/{{ nginx_version }}
 
-nginx_openssl_version_string_match: OpenSSL {{ openssl_version }}
-
 nginx_make_jobs: '{{ ansible_processor_vcpus }}'
 
 nginx_build_cflags: -m64 -march=native -mtune=native -Ofast -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections
