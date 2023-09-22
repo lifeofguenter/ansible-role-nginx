@@ -62,11 +62,13 @@
     - https://github.com/nginx/njs/archive/refs/tags/{{ ngx_njs_version }}.tar.gz
 
 - name: Fetch brotli
-  ansible.builtin.command: git submodule update --init
-  args:
-    chdir: /tmp/ngx_brotli-{{ ngx_brotli_version }}/
-  changed_when: true
-  failed_when: false
+  ansible.builtin.git:
+    repo: https://github.com/google/ngx_brotli.git
+    dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/
+    recursive: true
+    update: true
+    depth: 1
+    version: '{{ ngx_brotli_version }}'
 
 - name: Make clean
   ansible.builtin.command: make clean
