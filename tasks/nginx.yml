@@ -137,8 +137,8 @@
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   environment:
-    CFLAGS: '{{ nginx_build_CFLAGS }}'
-    LDFLAGS: '{{ nginx_build_LDFLAGS }}'
+    CFLAGS: '{{ nginx_build_cflags }}'
+    LDFLAGS: '{{ nginx_build_ldflags }}'
   changed_when: true
 
 - name: Make
@@ -146,8 +146,8 @@
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   environment:
-    CFLAGS: '{{ nginx_build_CFLAGS }}'
-    LDFLAGS: '{{ nginx_build_LDFLAGS }}'
+    CFLAGS: '{{ nginx_build_cflags }}'
+    LDFLAGS: '{{ nginx_build_ldflags }}'
   changed_when: true
 
 - name: Install
@@ -155,8 +155,8 @@
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
   environment:
-    CFLAGS: '{{ nginx_build_CFLAGS }}'
-    LDFLAGS: '{{ nginx_build_LDFLAGS }}'
+    CFLAGS: '{{ nginx_build_cflags }}'
+    LDFLAGS: '{{ nginx_build_ldflags }}'
   changed_when: true
   become: true
   notify: Restart_nginx
