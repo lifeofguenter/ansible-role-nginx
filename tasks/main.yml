@@ -8,8 +8,9 @@
 
 - name: Import nginx.yml
   ansible.builtin.import_tasks: nginx.yml
-  when: nginx_current.rc != 0 \
-    or not nginx_current.stderr is search(nginx_version_string_match) \
+  when: >-
+    nginx_current.rc != 0
+    or not nginx_current.stderr is search(nginx_version_string_match)
     or not nginx_current.stderr is search(openssl_version_string_match)
 
 - name: Import config.yml
