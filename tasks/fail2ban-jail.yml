@@ -4,6 +4,6 @@
   ansible.builtin.copy:
     src: jail.conf
     dest: /etc/fail2ban/jail.d/nginx.conf.disabled
-    mode: 0644
+    mode: '0644'
   notify: Restart_fail2ban
-  become: yes
+  become: true

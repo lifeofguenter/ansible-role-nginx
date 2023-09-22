@@ -3,6 +3,7 @@
 - name: Install dependencies
   ansible.builtin.apt:
     name:
+      - cmake
       - make
       - gcc
       - g++
@@ -10,17 +11,18 @@
       - libpcre3-dev
       - zlib1g-dev
       - libxslt-dev
+      - libssl-dev
     state: present
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
-  become: yes
+  become: true
 
 - name: Install libmodsecurity
   ansible.builtin.apt:
     name:
       - libmodsecurity3
       - libmodsecurity-dev
-  become: yes
+  become: true
   when: "'http_modsecurity' in nginx_load_modules"
 
 - name: Add modsecurity
@@ -32,10 +34,9 @@
   ansible.builtin.unarchive:
     src: "{{ item }}"
     dest: /tmp
-    remote_src: yes
+    remote_src: true
   with_items:
     - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
-    - https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
 
 - name: Cleanups
   ansible.builtin.file:
@@ -47,41 +48,53 @@
     - /tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
     - /tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
     - /tmp/njs-{{ ngx_njs_version }}
-  become: yes
+  become: true
 
 - name: Download ngx_*
   ansible.builtin.unarchive:
     src: "{{ item }}"
     dest: /tmp
-    remote_src: yes
+    remote_src: true
   with_items:
-    - https://github.com/google/ngx_brotli/archive/{{ ngx_brotli_version }}.zip
     - https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
     - https://github.com/aperezdc/ngx-fancyindex/archive/v{{ ngx_fancyindex_version }}.tar.gz
     - https://github.com/SpiderLabs/ModSecurity-nginx/releases/download/v{{ ngx_modsecurity_version }}/modsecurity-nginx-v{{ ngx_modsecurity_version }}.tar.gz
     - https://github.com/nginx/njs/archive/refs/tags/{{ ngx_njs_version }}.tar.gz
 
 - name: Fetch brotli
-  ansible.builtin.unarchive:
-    src: https://github.com/google/brotli/archive/v{{ brotli_version }}.tar.gz
-    dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/
-    remote_src: yes
+  ansible.builtin.git:
+    repo: https://github.com/google/ngx_brotli.git
+    dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/
+    recursive: true
+    update: true
+    depth: 1
+    version: '{{ ngx_brotli_version }}'
 
-- name: Remove brotli folder
+- name: Create brotli/out
   ansible.builtin.file:
-    path: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
-    state: absent
+    path: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli/out
+    state: directory
+    mode: '0755'
 
-- name: Rename brotli folder
-  ansible.builtin.command: mv /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
-  changed_when: yes
+- name: Compile brotli
+  ansible.builtin.command: '{{ item }}'
+  args:
+    chdir: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli/out
+  with_items:
+    - >-
+      cmake
+        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_INSTALL_PREFIX=./installed ..
+    - cmake --build . --config Release --target brotlienc
+  changed_when: true
+  failed_when: false
 
 - name: Make clean
   ansible.builtin.command: make clean
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
-  changed_when: yes
-  failed_when: no
+  changed_when: true
+  failed_when: false
 
 - name: Configure
   ansible.builtin.command: >
@@ -103,7 +116,7 @@
     --with-threads
     --with-file-aio
     --with-http_ssl_module
-    --with-openssl=../openssl-{{ openssl_version }}
+    --with-stream
     --with-http_realip_module
     --with-http_stub_status_module
     --with-http_v2_module
@@ -112,6 +125,7 @@
     --with-http_auth_request_module
     --with-http_secure_link_module
     --without-http_memcached_module
+    --with-compat
     --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
     --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
     --add-dynamic-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
@@ -119,18 +133,19 @@
     {{ nginx_compile_modsecurity }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
-  changed_when: yes
+  environment:
+  changed_when: true
 
 - name: Make
   ansible.builtin.command: make -j{{ nginx_make_jobs }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
-  changed_when: yes
+  changed_when: true
 
 - name: Install
   ansible.builtin.command: make install
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
-  changed_when: yes
-  become: yes
+  changed_when: true
+  become: true
   notify: Restart_nginx

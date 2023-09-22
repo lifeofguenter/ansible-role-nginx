@@ -6,8 +6,9 @@ jobs:
 
   build:
     machine:
-      # https://circleci.com/docs/configuration-reference#available-linux-machine-images
-      image: ubuntu-2004:2022.04.1
+      # https://circleci.com/developer/machine/image/ubuntu-2204
+      image: ubuntu-2204:2023.07.2
+    resource_class: large
     environment:
       ANSIBLE_PYTHON_INTERPRETER: /usr/bin/python3
 
@@ -15,8 +16,7 @@ jobs:
       - run: sudo rm -f /etc/apt/sources.list.d/google.list /etc/apt/sources.list.d/heroku.list
       - run: sudo apt-get update
       - run: sudo apt remove --assume-yes --purge apparmor
-      - run: sudo apt install --assume-yes net-tools
-      - run: pip3 install ansible ansible-lint
+      - run: sudo apt install --assume-yes ansible ansible-lint
 
       - run: ansible --version
       - run: ansible-lint --version
@@ -26,7 +26,9 @@ jobs:
       - run: printf '[defaults]\nroles_path=../' > ansible.cfg
       - run: ansible-lint
 
-      - run: ansible-playbook tests/test.yml -i tests/inventory --connection=local
+      - run:
+          command: ansible-playbook tests/test.yml -i tests/inventory --connection=local
+          no_output_timeout: 30m
 
       - run:
           command: sudo journalctl --no-pager --unit=nginx
