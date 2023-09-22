@@ -22,8 +22,9 @@ nginx_worker_connections: 2048
 
 # dynamically loaded modules
 nginx_load_modules:
-  #- http_fancyindex
-  #- http_js
+  # - http_fancyindex
+  # - http_js
+  - http_brotli_filter
   - http_modsecurity
 
 nginx_resolvers:

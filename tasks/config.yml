@@ -4,28 +4,28 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0755
-    recurse: no
+    mode: '0755'
+    recurse: false
   with_items:
     - /etc/nginx
     - /var/cache/nginx
     - /etc/nginx/common
     - /etc/nginx/vhosts
-  become: yes
+  become: true
 
 - name: Add logrotate config
   ansible.builtin.copy:
     src: logrotate
     dest: /etc/logrotate.d/nginx
-    mode: 0644
-  become: yes
+    mode: '0644'
+  become: true
 
 - name: Add systemd service
   ansible.builtin.copy:
     src: nginx.service.ini
     dest: /lib/systemd/system/nginx.service
-    mode: 0644
-  become: yes
+    mode: '0644'
+  become: true
   notify:
     - Reload_systemd
     - Restart_nginx
@@ -35,14 +35,14 @@
     src: htpasswd.sh
     dest: /usr/local/bin/htpasswd
     mode: a+x
-  become: yes
+  become: true
 
 - name: Adding base config files
   ansible.builtin.copy:
-    force: yes
+    force: true
     src: "{{ item }}"
     dest: /etc/nginx/{{ item }}
-    mode: 0644
+    mode: '0644'
   with_items:
     - common/client-performance.conf
     - common/client-performance-inline.conf
@@ -53,21 +53,21 @@
     - common/secure-ssl.conf
     - fastcgi.conf
     - mime.types
-  become: yes
+  become: true
   notify: Restart_nginx
 
 - name: Add nginx.conf
   ansible.builtin.template:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
-    mode: 0644
-  become: yes
+    mode: '0644'
+  become: true
   notify: Restart_nginx
 
 - name: Add default vhost config
   ansible.builtin.copy:
-    force: no
+    force: false
     src: vhost.conf
     dest: /etc/nginx/vhosts/default.conf
-    mode: 0644
-  become: yes
+    mode: '0644'
+  become: true

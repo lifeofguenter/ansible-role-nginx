@@ -11,16 +11,16 @@
       - zlib1g-dev
       - libxslt-dev
     state: present
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
-  become: yes
+  become: true
 
 - name: Install libmodsecurity
   ansible.builtin.apt:
     name:
       - libmodsecurity3
       - libmodsecurity-dev
-  become: yes
+  become: true
   when: "'http_modsecurity' in nginx_load_modules"
 
 - name: Add modsecurity
@@ -32,7 +32,7 @@
   ansible.builtin.unarchive:
     src: "{{ item }}"
     dest: /tmp
-    remote_src: yes
+    remote_src: true
   with_items:
     - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
     - https://www.openssl.org/source/openssl-{{ openssl_version }}.tar.gz
@@ -47,13 +47,13 @@
     - /tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
     - /tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
     - /tmp/njs-{{ ngx_njs_version }}
-  become: yes
+  become: true
 
 - name: Download ngx_*
   ansible.builtin.unarchive:
     src: "{{ item }}"
     dest: /tmp
-    remote_src: yes
+    remote_src: true
   with_items:
     - https://github.com/google/ngx_brotli/archive/{{ ngx_brotli_version }}.zip
     - https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
@@ -65,7 +65,7 @@
   ansible.builtin.unarchive:
     src: https://github.com/google/brotli/archive/v{{ brotli_version }}.tar.gz
     dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/
-    remote_src: yes
+    remote_src: true
 
 - name: Remove brotli folder
   ansible.builtin.file:
@@ -74,14 +74,14 @@
 
 - name: Rename brotli folder
   ansible.builtin.command: mv /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
-  changed_when: yes
+  changed_when: true
 
 - name: Make clean
   ansible.builtin.command: make clean
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
-  changed_when: yes
-  failed_when: no
+  changed_when: true
+  failed_when: false
 
 - name: Configure
   ansible.builtin.command: >
@@ -113,25 +113,25 @@
     --with-http_auth_request_module
     --with-http_secure_link_module
     --without-http_memcached_module
-    --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
     --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
+    --add-dynamic-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
     --add-dynamic-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
     --add-dynamic-module=/tmp/njs-{{ ngx_njs_version }}/nginx
     {{ nginx_compile_modsecurity }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
-  changed_when: yes
+  changed_when: true
 
 - name: Make
   ansible.builtin.command: make -j{{ nginx_make_jobs }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
-  changed_when: yes
+  changed_when: true
 
 - name: Install
   ansible.builtin.command: make install
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
-  changed_when: yes
-  become: yes
+  changed_when: true
+  become: true
   notify: Restart_nginx
