@@ -14,9 +14,9 @@ None
 
 nginx_version: 1.24.0
 
-openssl_version: 3.0.8
+openssl_version: 3.0.11
 
-brotli_version: 1.0.9
+brotli_version: 1.1.0
 
 # 3rd-party modules
 ngx_brotli_version: master
@@ -27,7 +27,7 @@ ngx_fancyindex_version: 0.5.2
 
 ngx_modsecurity_version: 1.0.3
 
-ngx_njs_version: 0.7.12
+ngx_njs_version: 0.8.1
 
 # config defaults
 nginx_worker_connections: 2048
