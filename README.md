@@ -16,8 +16,6 @@ nginx_version: 1.24.0
 
 openssl_version: 3.0.11
 
-brotli_version: 1.1.0
-
 # 3rd-party modules
 ngx_brotli_version: master
 

@@ -62,19 +62,11 @@
     - https://github.com/nginx/njs/archive/refs/tags/{{ ngx_njs_version }}.tar.gz
 
 - name: Fetch brotli
-  ansible.builtin.unarchive:
-    src: https://github.com/google/brotli/archive/v{{ brotli_version }}.tar.gz
-    dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/
-    remote_src: true
-
-- name: Remove brotli folder
-  ansible.builtin.file:
-    path: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
-    state: absent
-
-- name: Rename brotli folder
-  ansible.builtin.command: mv /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli-{{ brotli_version }} /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli
+  ansible.builtin.command: git submodule update --init
+  args:
+    chdir: /tmp/ngx_brotli-{{ ngx_brotli_version }}/
   changed_when: true
+  failed_when: false
 
 - name: Make clean
   ansible.builtin.command: make clean
