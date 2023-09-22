@@ -11,14 +11,9 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - jammy
-        - focal
-        - bionic
     - name: Debian
       versions:
         - bookworm
-        - bullseye
-        - buster
-        - stretch
   galaxy_tags:
     - system
     - development
