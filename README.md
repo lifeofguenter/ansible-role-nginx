@@ -12,26 +12,26 @@ None
 
 ```yaml
 
-nginx_version: 1.24.0
+nginx_version: 1.26.1
 
 # 3rd-party modules
 ngx_brotli_version: master
 
-ngx_headers_more_version: 0.34
+ngx_headers_more_version: 0.37
 
 ngx_fancyindex_version: 0.5.2
 
 ngx_modsecurity_version: 1.0.3
 
-ngx_njs_version: 0.8.1
+ngx_njs_version: 0.8.5
 
 # config defaults
 nginx_worker_connections: 2048
 
 # dynamically loaded modules
 nginx_load_modules:
-  #- http_fancyindex
-  #- http_js
+  # - http_fancyindex
+  # - http_js
   - http_modsecurity
 
 nginx_resolvers:
@@ -39,6 +39,9 @@ nginx_resolvers:
   - 8.8.8.8
 
 nginx_resolver_timeout: 2s
+
+nginx_compile_modsecurity: ''
+
 ```
 
 ## Dependencies
