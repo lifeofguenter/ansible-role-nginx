@@ -7,7 +7,7 @@ jobs:
   build:
     machine:
       # https://circleci.com/developer/machine/image/ubuntu-2204
-      image: ubuntu-2204:2023.07.2
+      image: default
     resource_class: large
     environment:
       ANSIBLE_PYTHON_INTERPRETER: /usr/bin/python3
