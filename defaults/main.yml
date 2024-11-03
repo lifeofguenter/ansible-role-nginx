@@ -1,17 +1,16 @@
 ---
 
-nginx_version: 1.26.1
+nginx_version: 1.26.2
+
+nginx_user: www-data
+nginx_group: www-data
 
 # 3rd-party modules
 ngx_brotli_version: master
-
 ngx_headers_more_version: 0.37
-
 ngx_fancyindex_version: 0.5.2
-
 ngx_modsecurity_version: 1.0.3
-
-ngx_njs_version: 0.8.5
+ngx_njs_version: 0.8.7
 
 # config defaults
 nginx_worker_connections: 2048
