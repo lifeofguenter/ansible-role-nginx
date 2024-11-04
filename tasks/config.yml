@@ -44,6 +44,7 @@
     dest: /etc/nginx/{{ item }}
     mode: '0644'
   with_items:
+    - common/bunny.conf
     - common/client-performance.conf
     - common/client-performance-inline.conf
     - common/cloudflare.conf
