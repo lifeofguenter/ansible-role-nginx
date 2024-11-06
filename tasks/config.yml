@@ -48,6 +48,7 @@
     - common/client-performance.conf
     - common/client-performance-inline.conf
     - common/cloudflare.conf
+    - common/cloudfront.conf
     - common/drop.conf
     - common/fix-slashes.conf
     - common/munin-node.conf
