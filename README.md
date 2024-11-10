@@ -17,6 +17,8 @@ nginx_version: 1.26.2
 nginx_user: www-data
 nginx_group: www-data
 
+nginx_worker_processes: auto
+
 # 3rd-party modules
 ngx_brotli_version: master
 ngx_headers_more_version: 0.37
