@@ -12,7 +12,7 @@ None
 
 ```yaml
 
-nginx_version: 1.26.2
+nginx_version: 1.26.3
 
 nginx_user: www-data
 nginx_group: www-data
