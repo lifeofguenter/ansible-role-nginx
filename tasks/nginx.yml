@@ -135,7 +135,6 @@
     {{ nginx_compile_modsecurity }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
-  environment:
   changed_when: true
 
 - name: Make
