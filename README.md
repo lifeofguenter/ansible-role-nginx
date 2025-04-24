@@ -12,7 +12,7 @@ None
 
 ```yaml
 
-nginx_version: 1.26.3
+nginx_version: 1.28.0
 
 nginx_user: www-data
 nginx_group: www-data
@@ -21,10 +21,10 @@ nginx_worker_processes: auto
 
 # 3rd-party modules
 ngx_brotli_version: master
-ngx_headers_more_version: 0.37
+ngx_headers_more_version: 0.38
 ngx_fancyindex_version: 0.5.2
 ngx_modsecurity_version: 1.0.3
-ngx_njs_version: 0.8.8
+ngx_njs_version: 0.8.10
 
 # config defaults
 nginx_worker_connections: 2048
