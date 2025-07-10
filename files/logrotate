@@ -1,4 +1,4 @@
-/var/log/nginx/*.log /var/www/logs/nginx-access.log /var/www/logs/nginx-error.log /var/www/*/logs/error.log {
+/var/log/nginx/*.log {
   daily
   missingok
   rotate 7
@@ -8,6 +8,6 @@
   create
   sharedscripts
   postrotate
-    kill -s USR1 $(cat /run/nginx.pid) &> /dev/null
+    /usr/sbin/nginx -s reopen > /dev/null
   endscript
 }
