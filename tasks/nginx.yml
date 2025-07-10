@@ -59,7 +59,8 @@
   with_items:
     - https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
     - https://github.com/aperezdc/ngx-fancyindex/archive/v{{ ngx_fancyindex_version }}.tar.gz
-    - https://github.com/owasp-modsecurity/ModSecurity-nginx/releases/download/v{{ ngx_modsecurity_version }}/ModSecurity-nginx-v{{ ngx_modsecurity_version }}.tar.gz
+    - "https://github.com/owasp-modsecurity/ModSecurity-nginx/releases/download/\
+        v{{ ngx_modsecurity_version }}/ModSecurity-nginx-v{{ ngx_modsecurity_version }}.tar.gz"
     - https://github.com/nginx/njs/archive/refs/tags/{{ ngx_njs_version }}.tar.gz
 
 - name: Fetch brotli
