@@ -11,10 +11,10 @@ nginx_error_log_level: error
 
 # 3rd-party modules
 ngx_brotli_version: master
-ngx_headers_more_version: 0.38
+ngx_headers_more_version: 0.39
 ngx_fancyindex_version: 0.5.2
-ngx_modsecurity_version: 1.0.3
-ngx_njs_version: 0.8.10
+ngx_modsecurity_version: 1.0.4
+ngx_njs_version: 0.9.0
 
 # config defaults
 nginx_worker_connections: 2048
@@ -30,5 +30,3 @@ nginx_resolvers:
   - 8.8.8.8
 
 nginx_resolver_timeout: 2s
-
-nginx_compile_modsecurity: ''
