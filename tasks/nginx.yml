@@ -28,7 +28,7 @@
 
 - name: Add modsecurity
   ansible.builtin.set_fact:
-    nginx_compile_modsecurity: --add-dynamic-module=/tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
+    nginx_compile_modsecurity: --add-dynamic-module=/tmp/ModSecurity-nginx-v{{ ngx_modsecurity_version }}
   when: "'http_modsecurity' in nginx_load_modules"
 
 - name: Fetch sources
@@ -59,7 +59,7 @@
   with_items:
     - https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
     - https://github.com/aperezdc/ngx-fancyindex/archive/v{{ ngx_fancyindex_version }}.tar.gz
-    - https://github.com/SpiderLabs/ModSecurity-nginx/releases/download/v{{ ngx_modsecurity_version }}/modsecurity-nginx-v{{ ngx_modsecurity_version }}.tar.gz
+    - https://github.com/owasp-modsecurity/ModSecurity-nginx/releases/download/v{{ ngx_modsecurity_version }}/ModSecurity-nginx-v{{ ngx_modsecurity_version }}.tar.gz
     - https://github.com/nginx/njs/archive/refs/tags/{{ ngx_njs_version }}.tar.gz
 
 - name: Fetch brotli
