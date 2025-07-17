@@ -13,8 +13,9 @@ nginx_error_log_level: error
 ngx_brotli_version: master
 ngx_headers_more_version: 0.39
 ngx_fancyindex_version: 0.5.2
+ngx_geoip2_version: 3.4
 ngx_modsecurity_version: 1.0.4
-ngx_njs_version: 0.9.0
+ngx_njs_version: 0.9.1
 
 # config defaults
 nginx_worker_connections: 2048
