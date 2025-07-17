@@ -10,9 +10,15 @@
       - git
       - unzip
       - libpcre3-dev
+      - libpcre3
       - zlib1g-dev
+      - zlib1g
       - libxslt-dev
+      - libxslt1.1
       - libssl-dev
+      - libssl3
+      - libmaxminddb-dev
+      - libmaxminddb0
     state: present
     update_cache: true
     cache_valid_time: 3600
@@ -21,8 +27,8 @@
 - name: Install libmodsecurity
   ansible.builtin.apt:
     name:
-      - libmodsecurity3
       - libmodsecurity-dev
+      - libmodsecurity3
   become: true
   when: "'http_modsecurity' in nginx_load_modules"
 
@@ -47,6 +53,7 @@
     - /tmp/ngx_brotli-{{ ngx_brotli_version }}
     - /tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
     - /tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
+    - /tmp/ngx_http_geoip2_module-{{ ngx_geoip2_version }}
     - /tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
     - /tmp/njs-{{ ngx_njs_version }}
   become: true
@@ -59,6 +66,7 @@
   with_items:
     - https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
     - https://github.com/aperezdc/ngx-fancyindex/archive/v{{ ngx_fancyindex_version }}.tar.gz
+    - https://github.com/leev/ngx_http_geoip2_module/archive/refs/tags/{{ ngx_geoip2_version }}.tar.gz
     - "https://github.com/owasp-modsecurity/ModSecurity-nginx/releases/download/\
         v{{ ngx_modsecurity_version }}/ModSecurity-nginx-v{{ ngx_modsecurity_version }}.tar.gz"
     - https://github.com/nginx/njs/archive/refs/tags/{{ ngx_njs_version }}.tar.gz
@@ -118,7 +126,6 @@
     --with-threads
     --with-file-aio
     --with-http_ssl_module
-    --with-stream
     --with-http_realip_module
     --with-http_stub_status_module
     --with-http_v2_module
@@ -133,6 +140,7 @@
     --with-compat
     --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
     --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
+    --add-module=/tmp/ngx_http_geoip2_module-{{ ngx_geoip2_version }}
     --add-dynamic-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
     --add-dynamic-module=/tmp/njs-{{ ngx_njs_version }}/nginx
     {{ nginx_compile_modsecurity | default('') }}
