@@ -3,6 +3,10 @@
 - name: Test Suite
   hosts: localhost
 
+  vars:
+    nginx_map_hash_max_size: 2048
+    nginx_map_hash_bucket_size: 64
+
   tasks:
     - name: Import role project
       ansible.builtin.import_role:
