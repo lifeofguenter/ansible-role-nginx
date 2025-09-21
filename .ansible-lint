@@ -2,3 +2,6 @@
 
 exclude_paths:
   - tests
+
+warn_list:
+  - schema[meta]

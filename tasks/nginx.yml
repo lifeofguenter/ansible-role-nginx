@@ -9,8 +9,8 @@
       - g++
       - git
       - unzip
-      - libpcre3-dev
-      - libpcre3
+      - libpcre2-dev
+      - libpcre2-8-0
       - zlib1g-dev
       - zlib1g
       - libxslt-dev
