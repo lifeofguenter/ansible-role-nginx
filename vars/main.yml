@@ -1,5 +1,3 @@
 ---
 
 nginx_version_string_match: nginx/{{ nginx_version }}
-
-nginx_make_jobs: '{{ ansible_processor_vcpus }}'
