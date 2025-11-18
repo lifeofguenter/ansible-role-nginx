@@ -31,3 +31,5 @@ nginx_resolvers:
   - 8.8.8.8
 
 nginx_resolver_timeout: 2s
+
+nginx_make_jobs: "{{ ansible_processor_vcpus }}"
