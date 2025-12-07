@@ -3,12 +3,10 @@
 - name: Set SSL package based on Debian/Ubuntu version
   ansible.builtin.set_fact:
     ssl_packages: >-
-      {{ ['libssl1.1'] if
-           (ansible_facts.os_family == 'Debian'
-            and ansible_facts.distribution == 'Debian'
+      {{ 'libssl1.1' if
+           (ansible_facts.distribution == 'Debian'
             and ansible_facts.distribution_major_version|int < 12)
-         else ['libssl3'] }}
-
+         else 'libssl3' }}
 
 - name: Install dependencies
   ansible.builtin.apt:
