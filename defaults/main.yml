@@ -1,6 +1,6 @@
 ---
 
-nginx_version: 1.28.0
+nginx_version: 1.30.0
 
 nginx_user: www-data
 nginx_group: www-data
@@ -12,10 +12,10 @@ nginx_error_log_level: error
 # 3rd-party modules
 ngx_brotli_version: master
 ngx_headers_more_version: 0.39
-ngx_fancyindex_version: 0.5.2
+ngx_fancyindex_version: 0.6.0
 ngx_geoip2_version: 3.4
 ngx_modsecurity_version: 1.0.4
-ngx_njs_version: 0.9.1
+ngx_njs_version: 0.9.7
 
 # config defaults
 nginx_worker_connections: 2048
