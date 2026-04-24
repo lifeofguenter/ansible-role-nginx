@@ -32,4 +32,4 @@ nginx_resolvers:
 
 nginx_resolver_timeout: 2s
 
-nginx_make_jobs: "{{ ansible_processor_vcpus }}"
+nginx_make_jobs: "{{ ansible_facts.processor_vcpus }}"
