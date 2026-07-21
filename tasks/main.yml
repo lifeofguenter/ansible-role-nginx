@@ -1,16 +1,23 @@
 ---
 
+- name: Check if nginx is installed
+  ansible.builtin.stat:
+    path: /usr/sbin/nginx
+  register: nginx_binary
+
 - name: Get current nginx version
   ansible.builtin.command: /usr/sbin/nginx -V
   register: nginx_current
-  ignore_errors: true
   changed_when: false
+  failed_when: false
+  when: nginx_binary.stat.exists
 
 - name: Include nginx.yml
   ansible.builtin.include_tasks: nginx.yml
   when: >-
-    nginx_current.rc != 0
-    or not nginx_current.stderr is search(nginx_version_string_match)
+    not nginx_binary.stat.exists
+    or nginx_current.rc | default(1) != 0
+    or not nginx_current.stderr | default('') is search(nginx_version_string_match)
 
 - name: Import config.yml
   ansible.builtin.import_tasks: config.yml
