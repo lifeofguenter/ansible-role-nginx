@@ -3,6 +3,7 @@
 - name: Reload_systemd
   ansible.builtin.systemd:
     daemon_reload: true
+  listen: nginx_daemon_reload
   become: true
 
 - name: Restart_nginx
@@ -10,16 +11,19 @@
     name: nginx
     enabled: true
     state: restarted
+  listen: nginx_restart
   become: true
 
 - name: Restart_munin_node
   ansible.builtin.systemd:
     name: munin-node
     state: restarted
+  listen: nginx_munin_node_restart
   become: true
 
 - name: Restart_fail2ban
   ansible.builtin.systemd:
     name: fail2ban
     state: restarted
+  listen: nginx_fail2ban_restart
   become: true
