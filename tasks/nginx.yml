@@ -2,7 +2,7 @@
 
 - name: Set SSL package based on Debian/Ubuntu version
   ansible.builtin.set_fact:
-    ssl_package: >-
+    nginx_ssl_package: >-
       {{ 'libssl1.1' if
            (ansible_facts.distribution == 'Debian'
             and ansible_facts.distribution_major_version|int < 12)
@@ -24,7 +24,7 @@
       - libxslt-dev
       - libxslt1.1
       - libssl-dev
-      - "{{ ssl_package }}"
+      - "{{ nginx_ssl_package }}"
       - libmaxminddb-dev
       - libmaxminddb0
     state: present
@@ -42,7 +42,7 @@
 
 - name: Add modsecurity
   ansible.builtin.set_fact:
-    nginx_compile_modsecurity: --add-dynamic-module=/tmp/ModSecurity-nginx-v{{ ngx_modsecurity_version }}
+    nginx_compile_modsecurity: --add-dynamic-module=/tmp/ModSecurity-nginx-v{{ nginx_modsecurity_version }}
   when: "'http_modsecurity' in nginx_load_modules"
 
 - name: Fetch sources
@@ -51,19 +51,19 @@
     dest: /tmp
     remote_src: true
   with_items:
-    - http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
+    - https://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
 
 - name: Cleanups
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   with_items:
-    - /tmp/ngx_brotli-{{ ngx_brotli_version }}
-    - /tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
-    - /tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
-    - /tmp/ngx_http_geoip2_module-{{ ngx_geoip2_version }}
-    - /tmp/modsecurity-nginx-v{{ ngx_modsecurity_version }}
-    - /tmp/njs-{{ ngx_njs_version }}
+    - /tmp/ngx_brotli-{{ nginx_brotli_version }}
+    - /tmp/headers-more-nginx-module-{{ nginx_headers_more_version }}
+    - /tmp/ngx-fancyindex-{{ nginx_fancyindex_version }}
+    - /tmp/ngx_http_geoip2_module-{{ nginx_geoip2_version }}
+    - /tmp/ModSecurity-nginx-v{{ nginx_modsecurity_version }}
+    - /tmp/njs-{{ nginx_njs_version }}
   become: true
 
 - name: Download ngx_*
@@ -72,32 +72,32 @@
     dest: /tmp
     remote_src: true
   with_items:
-    - https://github.com/openresty/headers-more-nginx-module/archive/v{{ ngx_headers_more_version }}.zip
-    - https://github.com/aperezdc/ngx-fancyindex/archive/v{{ ngx_fancyindex_version }}.tar.gz
-    - https://github.com/leev/ngx_http_geoip2_module/archive/refs/tags/{{ ngx_geoip2_version }}.tar.gz
+    - https://github.com/openresty/headers-more-nginx-module/archive/v{{ nginx_headers_more_version }}.zip
+    - https://github.com/aperezdc/ngx-fancyindex/archive/v{{ nginx_fancyindex_version }}.tar.gz
+    - https://github.com/leev/ngx_http_geoip2_module/archive/refs/tags/{{ nginx_geoip2_version }}.tar.gz
     - "https://github.com/owasp-modsecurity/ModSecurity-nginx/releases/download/\
-        v{{ ngx_modsecurity_version }}/ModSecurity-nginx-v{{ ngx_modsecurity_version }}.tar.gz"
-    - https://github.com/nginx/njs/archive/refs/tags/{{ ngx_njs_version }}.tar.gz
+        v{{ nginx_modsecurity_version }}/ModSecurity-nginx-v{{ nginx_modsecurity_version }}.tar.gz"
+    - https://github.com/nginx/njs/archive/refs/tags/{{ nginx_njs_version }}.tar.gz
 
 - name: Fetch brotli
   ansible.builtin.git:
     repo: https://github.com/google/ngx_brotli.git
-    dest: /tmp/ngx_brotli-{{ ngx_brotli_version }}/
+    dest: /tmp/ngx_brotli-{{ nginx_brotli_version }}/
     recursive: true
     update: true
     depth: 1
-    version: '{{ ngx_brotli_version }}'
+    version: '{{ nginx_brotli_version }}'
 
 - name: Create brotli/out
   ansible.builtin.file:
-    path: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli/out
+    path: /tmp/ngx_brotli-{{ nginx_brotli_version }}/deps/brotli/out
     state: directory
     mode: '0755'
 
 - name: Compile brotli
   ansible.builtin.command: '{{ item }}'
   args:
-    chdir: /tmp/ngx_brotli-{{ ngx_brotli_version }}/deps/brotli/out
+    chdir: /tmp/ngx_brotli-{{ nginx_brotli_version }}/deps/brotli/out
   with_items:
     - >-
       cmake
@@ -146,11 +146,11 @@
     --with-http_slice_module
     --without-http_memcached_module
     --with-compat
-    --add-module=/tmp/ngx_brotli-{{ ngx_brotli_version }}
-    --add-module=/tmp/headers-more-nginx-module-{{ ngx_headers_more_version }}
-    --add-module=/tmp/ngx_http_geoip2_module-{{ ngx_geoip2_version }}
-    --add-dynamic-module=/tmp/ngx-fancyindex-{{ ngx_fancyindex_version }}
-    --add-dynamic-module=/tmp/njs-{{ ngx_njs_version }}/nginx
+    --add-module=/tmp/ngx_brotli-{{ nginx_brotli_version }}
+    --add-module=/tmp/headers-more-nginx-module-{{ nginx_headers_more_version }}
+    --add-module=/tmp/ngx_http_geoip2_module-{{ nginx_geoip2_version }}
+    --add-dynamic-module=/tmp/ngx-fancyindex-{{ nginx_fancyindex_version }}
+    --add-dynamic-module=/tmp/njs-{{ nginx_njs_version }}/nginx
     {{ nginx_compile_modsecurity | default('') }}
   args:
     chdir: /tmp/nginx-{{ nginx_version }}
@@ -168,4 +168,4 @@
     chdir: /tmp/nginx-{{ nginx_version }}
   changed_when: true
   become: true
-  notify: Restart_nginx
+  notify: nginx_restart

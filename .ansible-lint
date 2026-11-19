@@ -1,6 +1,8 @@
 ---
 
 exclude_paths:
+  - .ansible
+  - .circleci
   - tests
 
 warn_list:

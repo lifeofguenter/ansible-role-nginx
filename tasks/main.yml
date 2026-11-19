@@ -1,19 +1,10 @@
 ---
 
-- name: Check if nginx is installed
-  ansible.builtin.stat:
-    path: /usr/sbin/nginx
-  register: nginx_binary
+- name: Import checks.yml
+  ansible.builtin.import_tasks: checks.yml
 
-- name: Get current nginx version
-  ansible.builtin.command: /usr/sbin/nginx -V
-  register: nginx_current
-  changed_when: false
-  failed_when: false
-  when: nginx_binary.stat.exists
-
-- name: Include nginx.yml
-  ansible.builtin.include_tasks: nginx.yml
+- name: Import nginx.yml
+  ansible.builtin.import_tasks: nginx.yml
   when: >-
     not nginx_binary.stat.exists
     or nginx_current.rc | default(1) != 0
@@ -22,22 +13,10 @@
 - name: Import config.yml
   ansible.builtin.import_tasks: config.yml
 
-- name: Check if munin-node is installed
-  ansible.builtin.command: dpkg -L munin-node
-  register: dpkg_munin_node_check
-  changed_when: false
-  failed_when: "'command not found' in dpkg_munin_node_check.stderr"
+- name: Import munin-plugin.yml
+  ansible.builtin.import_tasks: munin-plugin.yml
+  when: nginx_munin_node_check.rc == 0
 
-- name: Include munin-plugin.yml
-  ansible.builtin.include_tasks: munin-plugin.yml
-  when: dpkg_munin_node_check.rc == 0
-
-- name: Check if fail2ban is installed
-  ansible.builtin.command: dpkg -L fail2ban
-  register: dpkg_fail2ban_check
-  changed_when: false
-  failed_when: "'command not found' in dpkg_fail2ban_check.stderr"
-
-- name: Include fail2ban-jail.yml
-  ansible.builtin.include_tasks: fail2ban-jail.yml
-  when: dpkg_fail2ban_check.rc == 0
+- name: Import fail2ban-jail.yml
+  ansible.builtin.import_tasks: fail2ban-jail.yml
+  when: nginx_fail2ban_check.rc == 0

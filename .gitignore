@@ -1,11 +1,10 @@
 .DS_Store
-*~
-.attach_pid*
 /.idea/
 /.env
+*~
+.attach_pid*
 /.env.*
 
 # ansible specific
 /.ansible/
-/.roles
 *.retry
